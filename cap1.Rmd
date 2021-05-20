@@ -1,0 +1,371 @@
+---
+title: "**Análisis Multivariado**"
+--- 
+  
+<div class=text-justify>
+    
+<br>
+<br>
+<br>
+    
+    
+## 1. Análisis de Correspondencias de las Variables: Condición de actividad de la persona (P3_7), y Destino de los viajes realizados (P5_11A). 
+
+<br>
+
+### Metodología. 
+
+<br>
+
+Se inicia con un análisis de correspondencias entre la variable de condición de actividad de la persona (pregunta P3_7) y el destino de sus viajes realizados (P5_11A), con la intención de indagar la relación existente entre estos datos.
+
+Las categorías de la variable Condición de Actividad son:
+
+  - 1	Trabajó  
+  - 2	Tenía trabajo, pero no trabajó  
+  - 3	Buscó trabajo  
+  - 4	Es estudiante  
+  - 5	Se dedica a los quehaceres del hogar o a cuidar a sus hijos  
+  - 6	Es jubilado(a) o pensionado(a)  
+  - 7	Está incapacitado(a) permanentemente para trabajar  
+  - 8	No trabajó  
+
+Mientras que las de la variable Destino del viaje son:
+ 
+  - 01	Su hogar  
+  - 02	Escuela  
+  - 03	Oficina  
+  - 04	Fábrica o taller  
+  - 05	Comercio, mercado, tienda o centro comercial  
+  - 06	Centro cultural o área recreativa  
+  - 07	Otra vivienda  
+  - 08	Hospital, clínica, consultorio, laboratorio clínico  
+  - 09	Restaurante, bar, cafetería  
+  - 10	Deportivo, gimnasio  
+  - 11	Bases o estaciones de transporte público  
+  - 12	Obra en construcción  
+  - 13	Otros servicios  
+  - 14	Recinto religioso  
+  - 15	Vía pública  
+  - 16	Otro  
+  - 99	No sabe  
+
+<br>
+
+Se comienza, por lo tanto, leyendo los datos y adjuntando la variable P3_7 de la tabla TSDem a la tabla TViaje:
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F} 
+
+viajes <- read.csv("bd/tviaje2.csv")
+tsdem <- read.csv("bd/tsdem.csv")
+
+library(sqldf)
+
+viajes2 <- sqldf("SELECT viajes.*, tsdem.niv, tsdem.p3_7 FROM viajes LEFT JOIN
+                 tsdem ON viajes.id_soc = tsdem.id_soc")
+rm(viajes)
+
+``` 
+
+<br>
+
+Luego, con ello se arma la matriz de datos y se analizan su independencia con la prueba de $\chi^2$:
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F} 
+
+# Se genera la tabla de contingencia entre las variables seleccionadas
+analisis_1<-table(viajes2$p3_7, viajes2$p5_11a)
+
+rownames(analisis_1) <- c("Trabajo","Tenia trabajo pero no...","Busco trabajo","Estudio","Hogar","Jubilado","Incapacitado","No trabajo")
+
+colnames(analisis_1) <- c("Hogar","Escuela","Oficina","Fabrica/taller","Comercio","Centro Cultural ","Otra vivienda","Hosp. Clinica o Lab","Restaurant","Deportivo,Gym","Bases Transp. Pub,","Obra en Const.","Otros serv.","Recint. Relig.","Via Publica","Otro","No sabe")
+
+# Tabla de contingencia:
+analisis_1
+
+chiR<-chisq.test(analisis_1)
+
+# Inercia total medida de la variabilidad de los datos en la tabla
+n<-sum(analisis_1)
+inetot<-chiR$statistic/n
+print(chiR)
+print(inetot)
+ 
+```
+
+<br>
+
+Por el p-valor se rechaza $H_0$, lo que establece que las variables analizadas son dependientes.
+
+<br>
+<br>
+
+### Resultados. 
+
+<br>
+
+Se genera la proyección conjunta de los datos en dos dimensiones:
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F} 
+
+library("ca")
+
+corres <-ca (analisis_1,nd=2)
+plot(corres)
+
+## Presenta informacion del modelo de análisis de correspondencia
+corres
+
+```
+
+<br>
+
+### Interpretación.
+
+<br>
+
+La dimensión 2 actúa como un discriminante a pesar del poco valor de variabilidad (20%)
+ya que los valores mas altos (extremos) se presentan en la parte superior de la gráfica.
+
+<br>
+
+#### *Analisis de la gráfica de correspondencia.*
+
+*Cuadrante I*
+
+Se observa que las personas que se dedican a los quehaceres del hogar y que no tienen trabajo, tienen como destino más común su hogar, centro cultural o área recreativa, los recintos 
+religiosos y algunos no lo saben.
+
+*Cuadrante II*
+
+Cuando la persona que viaja busca trabajo, tenia trabajo, pero no trabajó, es jubilada o pensionada, o está incapacitada permanentemente para trabajar, tiene como destino los mercados, comercios,tienda  o centro comercial, y hospitales, clínicas, consultorios, etc.
+
+*Cuadrante III*
+
+Cuando la persona que viaja tiene trabajo, sus destinos mas frecuentes son: Fábrica/taller, Hogar, escuela, oficina,  estaciones  de  transporte público,  vía pública,  otros lugares, restaurantes, bar, cafetería y otros servicios.
+
+*Cuadrante IV*
+
+Cuando se es estudiante, los destinos mas frecuentes son: Deportivo/gimnasio y Escuela.
+
+<br>
+
+### Conclusión.
+
+En  el  análisis  multivariado  es importante  tener  una  visión rápida  y  de preferencia  gráfica  del comportamiento de los datos. En nuestro caso,  para las  dos  variables  seleccionadas, condición de actividad de la persona (P3_7) y destino de los viajes realizados (P5_11A), una de estas técnicas descriptivas que se adecua muy bien es el análisis  de  correspondencias, el cual nos permite elaborar  un mapa perceptual de  las  categorías  de las variables analizadas en un espacio de pocas dimensiones (2), ya que con dichas dimensiones se tiene un porcentaje alto de variabilidad explicada (96.8%), lo facilita su interpretación  gráfica, en donde la mayor o menor distancia entre los puntos reflejan cierto grado de asociación entre las categorías representadas. Seleccionamos esta técnica de análisis porque se aplica a variables categóricas.
+
+<br>
+<br>
+<br>
+
+
+
+
+
+## 2. Análisis de correspondencias de las variables: Estrato socioeconómico (Estrato), y duración del viaje.
+
+<br>
+
+### Metodología. 
+
+<br>
+
+La duración de los viajes es una variable que se captó de forma indirecta, ya que se recopilaron los datos de las horas de inicio y fin de cada viaje. La suposición inicial es que los estratos socioeconómicos más bajos utilizan mayor cantidad de tiempo viajando, debido a las limitaciones en la movilidad a las que se encuentran sometidos.
+
+Las categorías de la variable Estrato son: 
+
+  - 1 Bajo  
+  - 2 Medio bajo  
+  - 3 Medio alto  
+  - 4 Alto
+
+Comenzamos por lo tanto, por calcular la duración de los viajes en minutos, a partir de las horas de inicio y término.
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F} 
+
+d1 <- ifelse(viajes2$p5_10_1 < viajes2$p5_9_1, 
+                    viajes2$p5_10_1+24, viajes2$p5_10_1)
+
+viajes2$duracion <- (d1-viajes2$p5_9_1)*60 + 
+                       viajes2$p5_10_2-viajes2$p5_9_2
+
+```
+
+<br>
+
+Después, dado que se requiere categorizar a la variable continua denominada *duracion*, se procede a generar variables de rangos de minutos, según los siguientes intervalos:
+
+  - De 0 a 15 minutos (d0a15m) 
+  - De 16 a 30 minutos (d16a30m)   
+  - De 31 a 60 minutos (d31a60m)  
+  - De 61 a 90 minutos (d61a90m)  
+  - De 91 a 120 minutos (d91a120m)  
+  - Más de 120 minutos (m120m)  
+  
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F} 
+
+viajes2$d0a15m <- ifelse(viajes2$duracion >= 0 & viajes2$duracion <= 15, 1, 0)
+viajes2$d16a30m <- ifelse(viajes2$duracion >= 16 & viajes2$duracion <= 30, 1, 0)
+viajes2$d31a60m <- ifelse(viajes2$duracion >= 31 & viajes2$duracion <= 60, 1, 0)
+viajes2$d61a90m <- ifelse(viajes2$duracion >= 61 & viajes2$duracion <= 90, 1, 0)
+viajes2$d91a120m <- ifelse(viajes2$duracion >= 91 & viajes2$duracion <= 120, 1, 0)
+viajes2$m120m <- ifelse(viajes2$duracion >= 121, 1, 0)
+
+```
+
+<br>
+
+Y con ello se procede a generar la tabla de contingencia de las variables de interés:
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F} 
+
+tc <- sqldf("SELECT estrato, m120m, d91a120m, d61a90m, d31a60m, d16a30m, 
+        d0a15m, COUNT(*) FROM viajes2 GROUP BY estrato, m120m, d91a120m, 
+        d61a90m, d31a60m, d16a30m, d0a15m")
+mat_cont <- matrix(tc[1:24,8], ncol=6, byrow=TRUE)
+rownames(mat_cont) <- c("Bajo", "Medio bajo", "Medio alto", "Alto")
+colnames(mat_cont) <- c("d0a15m","d16a30m","d31a60m","d61a90m","d91a120m","m120m")
+mat_cont
+
+```
+
+<br>
+
+Aplicamos la prueba $\chi^2$, para explorar su comportamiento respecto a la independencia de las categorías:
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F} 
+
+chisq.test(mat_cont)
+
+```
+
+<br>
+
+Donde puede verse que de acuerdo al p-valor < 0.05, se rechaza la hipótesis de independencia,
+lo que seguramente tendrá impacto directo en la forma en que se aproximen las categorías en
+la proyección conjunta de los datos en el análisis de correspondencias.
+
+<br>
+
+### Resultados. 
+
+<br>
+
+Se aplica a continuación el análisis de correspondencias nuevamente con la librería *ca*:
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F} 
+
+ac_datos <- ca(mat_cont, nd = 2)
+ac_datos
+
+```
+
+<br>
+
+Que nos arroja los resultados más importantes de la proyección en dos dimensiones (valores
+propios, varianza explicada, masa, inercia, por renglones y columnas).
+
+Podemos ver, por ejemplo, que la varianza explicada por la primera coordenada es de poco más del 85%, lo cual significa que el problema de proyección en realidad es casi unidimensional,
+por lo que hay que darle más importancia a lo visto o representado sobre el primer eje que
+a lo visto sobre el segundo. 
+
+Los datos también contienen por supuesto las coordenadas de las dos dimensiones para
+renglones y columnas, las cuales pueden graficarse.
+
+
+Tomamos en primer lugar la proyección de los renglones:
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+plot.ca(ac_datos, what=c("all", "none"),
+main="Proyección de los renglones en dos dimensiones")
+
+```
+
+<br>
+
+Y la de las columnas:
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+plot.ca(ac_datos, what=c("none", "all"),
+main="Proyección de las columnas en dos dimensiones")
+
+```
+
+<br>
+
+Para mostrar finalmente, la proyección conjunta de renglones y columnas: 
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+plot(ac_datos, ,
+main="Proyección conjunta en dos dimensiones")
+
+```
+
+<br>
+<br>
+
+### Interpretación. 
+
+<br>
+
+La inercia (varianza) explicada por las dos dimensiones es de casi 99%, lo que asegura de entrada que los plots anteriores resumen muy bien la información de las correspondencias.
+
+Por otra parte, de la proyección de los renglones se observa que:
+
+  - Las categorías se hallan separadas entre sí, es decir, no se aprecia cercanía alguna
+entre ellas.
+
+  - Se puede observar que el orden de los puntos a lo largo de la dimensión 1, coincide
+con el orden de las propias categorías de *Alto* a *Bajo*, sin que se haya proporcionado al
+algoritmo más información que la tabla de contingencia, y sin que el resultado tenga
+que ver con el orden en que se colocaron las filas en dicha matriz. Lo anterior significa que el hecho de que *Alto* y *Bajo* se encuentren en los extremos de la gráfica significa que son las categorías que tienen comportamientos contrarios. 
+
+  - Finalmente, mencionar que el que unos grupos estén en la parte negativa y otros en la positiva, no tiene ningún significado, solo es interesante analizar las diferencias o similitudes existentes entre ellos.
+  
+<br>
+
+En cuanto a la proyección de las columnas, se observa lo siguiente:
+
+ - Se observa una buena diferenciación entre las categorías, excepto entre *d16a30m* y *d61a90m*, las cuales se encuentran cercanas en la dimensión 1 (recordemos que las distancias en esta dimensión tienen mucho mayor peso que las distancias sobre el eje vertical), lo que implica cierta semejanza en el comportamiento de ambas dentro del conjunto de datos.
+ 
+ - A diferencia de la proyección por renglones, en este caso no se aprecia un ordenamiento natural de las categorías, estando en este caso *d31a60m* y *m120m* en los extremos de la proyección.
+
+<br>
+
+Luego, de la proyección conjunta se observa lo siguiente:
+
+  - Siempre tomando como base las distancias sobre el eje horizontal, por ser el más relevante, se aprecia mucha cercanía entre las categorías *Bajo* y *m120m*. La siguiente categoría de duración más cercana al estrato *Bajo* es *d91a120m*. Por otra parte, cabe resaltar que el estrato más cercano a la categoría *d91a120m* es el *Medio Bajo*. Lo anterior refuerza la suposición inicial, de que los estratos socioeconómicos menos favorecidos emplean mayor tiempo en trasladarse. El estrato *Medio bajo* es  muy cercano a *d0a15m*, lo que podría explicarse recordando que se captaron viajes a pie, en los cuales puede estar la mayor frecuencia de dicha duración.
+  
+  - En el centro de la gráfica se aprecia cierta cercanía entre el estrato *Medio alto* con *d16a30m* y *d61a90*, e incluso con *d31a60m*, lo que no deja muy claro el comportamiento de este estrato.
+  
+  - Por otro lado, en el extremo izquierdo de la proyección sí es posible apreciar que el estrato *Alto* tiene únicamente una categoría de duración que es la más aproximada, *d31a60m*. Esto es consistente con la hipótesis inicial, pues mientras los estratos bajos usan mucho tiempo en sus traslados, el estrato *Alto* tiende a demorarse cuando mucho una hora. 
+
+Debemos tener presente, no obstante, que todas estas interpretaciones representan sólo un primer acercamiento a las relaciones entre estas variables con la herrmienta de análisis de correspondencias, y no consideran efectos subyacentes debido a otras causas.
+
+
+

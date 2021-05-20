@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Análisis Multivariado</title>
+
+<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-sm-12 col-md-4 col-lg-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-sm-12 col-md-8 col-lg-9">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">MAEC MEM Proyecto Final <br></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fas fa-home"></span>
+     
+    Presentación
+  </a>
+</li>
+<li>
+  <a href="cap1.html">
+    <span class="fas fa-tasks"></span>
+     
+    Análisis Multivariado
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore"><strong>Análisis Multivariado</strong></h1>
+
+</div>
+
+
+<div class=text-justify>
+
+<p><br> <br> <br></p>
+<div id="análisis-de-correspondencias-de-las-variables-condición-de-actividad-de-la-persona-p3_7-y-destino-de-los-viajes-realizados-p5_11a." class="section level2">
+<h2>1. Análisis de Correspondencias de las Variables: Condición de actividad de la persona (P3_7), y Destino de los viajes realizados (P5_11A).</h2>
+<p><br></p>
+<div id="metodología." class="section level3">
+<h3>Metodología.</h3>
+<p><br></p>
+<p>Se inicia con un análisis de correspondencias entre la variable de condición de actividad de la persona (pregunta P3_7) y el destino de sus viajes realizados (P5_11A), con la intención de indagar la relación existente entre estos datos.</p>
+<p>Las categorías de la variable Condición de Actividad son:</p>
+<ul>
+<li>1 Trabajó<br />
+</li>
+<li>2 Tenía trabajo, pero no trabajó<br />
+</li>
+<li>3 Buscó trabajo<br />
+</li>
+<li>4 Es estudiante<br />
+</li>
+<li>5 Se dedica a los quehaceres del hogar o a cuidar a sus hijos<br />
+</li>
+<li>6 Es jubilado(a) o pensionado(a)<br />
+</li>
+<li>7 Está incapacitado(a) permanentemente para trabajar<br />
+</li>
+<li>8 No trabajó</li>
+</ul>
+<p>Mientras que las de la variable Destino del viaje son:</p>
+<ul>
+<li>01 Su hogar<br />
+</li>
+<li>02 Escuela<br />
+</li>
+<li>03 Oficina<br />
+</li>
+<li>04 Fábrica o taller<br />
+</li>
+<li>05 Comercio, mercado, tienda o centro comercial<br />
+</li>
+<li>06 Centro cultural o área recreativa<br />
+</li>
+<li>07 Otra vivienda<br />
+</li>
+<li>08 Hospital, clínica, consultorio, laboratorio clínico<br />
+</li>
+<li>09 Restaurante, bar, cafetería<br />
+</li>
+<li>10 Deportivo, gimnasio<br />
+</li>
+<li>11 Bases o estaciones de transporte público<br />
+</li>
+<li>12 Obra en construcción<br />
+</li>
+<li>13 Otros servicios<br />
+</li>
+<li>14 Recinto religioso<br />
+</li>
+<li>15 Vía pública<br />
+</li>
+<li>16 Otro<br />
+</li>
+<li>99 No sabe</li>
+</ul>
+<p><br></p>
+<p>Se comienza, por lo tanto, leyendo los datos y adjuntando la variable P3_7 de la tabla TSDem a la tabla TViaje:</p>
+<p><br></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>viajes <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;bd/tviaje2.csv&quot;</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>tsdem <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;bd/tsdem.csv&quot;</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sqldf)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>viajes2 <span class="ot">&lt;-</span> <span class="fu">sqldf</span>(<span class="st">&quot;SELECT viajes.*, tsdem.niv, tsdem.p3_7 FROM viajes LEFT JOIN</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="st">                 tsdem ON viajes.id_soc = tsdem.id_soc&quot;</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(viajes)</span></code></pre></div>
+<p><br></p>
+<p>Luego, con ello se arma la matriz de datos y se analizan su independencia con la prueba de <span class="math inline">\(\chi^2\)</span>:</p>
+<p><br></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Se genera la tabla de contingencia entre las variables seleccionadas</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>analisis_1<span class="ot">&lt;-</span><span class="fu">table</span>(viajes2<span class="sc">$</span>p3_7, viajes2<span class="sc">$</span>p5_11a)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(analisis_1) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Trabajo&quot;</span>,<span class="st">&quot;Tenia trabajo pero no...&quot;</span>,<span class="st">&quot;Busco trabajo&quot;</span>,<span class="st">&quot;Estudio&quot;</span>,<span class="st">&quot;Hogar&quot;</span>,<span class="st">&quot;Jubilado&quot;</span>,<span class="st">&quot;Incapacitado&quot;</span>,<span class="st">&quot;No trabajo&quot;</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(analisis_1) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Hogar&quot;</span>,<span class="st">&quot;Escuela&quot;</span>,<span class="st">&quot;Oficina&quot;</span>,<span class="st">&quot;Fabrica/taller&quot;</span>,<span class="st">&quot;Comercio&quot;</span>,<span class="st">&quot;Centro Cultural &quot;</span>,<span class="st">&quot;Otra vivienda&quot;</span>,<span class="st">&quot;Hosp. Clinica o Lab&quot;</span>,<span class="st">&quot;Restaurant&quot;</span>,<span class="st">&quot;Deportivo,Gym&quot;</span>,<span class="st">&quot;Bases Transp. Pub,&quot;</span>,<span class="st">&quot;Obra en Const.&quot;</span>,<span class="st">&quot;Otros serv.&quot;</span>,<span class="st">&quot;Recint. Relig.&quot;</span>,<span class="st">&quot;Via Publica&quot;</span>,<span class="st">&quot;Otro&quot;</span>,<span class="st">&quot;No sabe&quot;</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Tabla de contingencia:</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>analisis_1</span></code></pre></div>
+<pre><code>##                           
+##                             Hogar Escuela Oficina Fabrica/taller Comercio Centro Cultural 
+##   Trabajo                  132148   12877   30884          19345    46981             6007
+##   Tenia trabajo pero no...   1180     184     119             93      438               50
+##   Busco trabajo              2651     410     336            181     1030              208
+##   Estudio                   34224   23404     777            313     5390             2758
+##   Hogar                     37194   11229     619            295    18946             1622
+##   Jubilado                   9286     635     483            108     4686              853
+##   Incapacitado                895      64      39             14      361               68
+##   No trabajo                11022    2362     422            261     5074              788
+##                           
+##                            Otra vivienda Hosp. Clinica o Lab Restaurant Deportivo,Gym
+##   Trabajo                          15707                5582       2379          1051
+##   Tenia trabajo pero no...           204                 143         24             9
+##   Busco trabajo                      478                 119         38            29
+##   Estudio                           3098                 578        319           482
+##   Hogar                             4501                2035        254           210
+##   Jubilado                          1485                1257        268           105
+##   Incapacitado                       128                 230         17            10
+##   No trabajo                        1635                 923        126           104
+##                           
+##                            Bases Transp. Pub, Obra en Const. Otros serv. Recint. Relig. Via Publica
+##   Trabajo                                2674           1153         751           1090        1253
+##   Tenia trabajo pero no...                 17             13          10             15           6
+##   Busco trabajo                            33             13          16             36           9
+##   Estudio                                  88             16         139            301          52
+##   Hogar                                   106              4         120            686         116
+##   Jubilado                                 84              6          45            277          39
+##   Incapacitado                              6              7           4             27          12
+##   No trabajo                               76             29          56            242          59
+##                           
+##                              Otro No sabe
+##   Trabajo                    4079     498
+##   Tenia trabajo pero no...     34       5
+##   Busco trabajo                85      12
+##   Estudio                     245      97
+##   Hogar                       457     249
+##   Jubilado                    283      50
+##   Incapacitado                 24       2
+##   No trabajo                  249      73</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>chiR<span class="ot">&lt;-</span><span class="fu">chisq.test</span>(analisis_1)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Inercia total medida de la variabilidad de los datos en la tabla</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>n<span class="ot">&lt;-</span><span class="fu">sum</span>(analisis_1)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>inetot<span class="ot">&lt;-</span>chiR<span class="sc">$</span>statistic<span class="sc">/</span>n</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(chiR)</span></code></pre></div>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test
+## 
+## data:  analisis_1
+## X-squared = 88548, df = 112, p-value &lt; 2.2e-16</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(inetot)</span></code></pre></div>
+<pre><code>## X-squared 
+## 0.1810906</code></pre>
+<p><br></p>
+<p>Por el p-valor se rechaza <span class="math inline">\(H_0\)</span>, lo que establece que las variables analizadas son dependientes.</p>
+<p><br> <br></p>
+</div>
+<div id="resultados." class="section level3">
+<h3>Resultados.</h3>
+<p><br></p>
+<p>Se genera la proyección conjunta de los datos en dos dimensiones:</p>
+<p><br></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;ca&quot;</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>corres <span class="ot">&lt;-</span><span class="fu">ca</span> (analisis_1,<span class="at">nd=</span><span class="dv">2</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(corres)</span></code></pre></div>
+<p><img src="cap1_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Presenta informacion del modelo de análisis de correspondencia</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>corres</span></code></pre></div>
+<pre><code>## 
+##  Principal inertias (eigenvalues):
+##            1        2        3       4        5        6       7      
+## Value      0.139003 0.036202 0.00495 0.000638 0.000217 6.2e-05 1.7e-05
+## Percentage 76.76%   19.99%   2.73%   0.35%    0.12%    0.03%   0.01%  
+## 
+## 
+##  Rows:
+##           Trabajo Tenia trabajo pero no... Busco trabajo  Estudio     Hogar  Jubilado Incapacitado
+## Mass     0.581751                 0.005203      0.011624 0.147823  0.160834  0.040800     0.003902
+## ChiDist  0.279694                 0.295264      0.192575 0.794118  0.386925  0.503333     0.758580
+## Inertia  0.045510                 0.000454      0.000431 0.093221  0.024079  0.010336     0.002245
+## Dim. 1  -0.716012                -0.170514     -0.130360 2.049247  0.679787 -0.186131    -0.205301
+## Dim. 2   0.437988                -0.934589     -0.541033 1.120821 -1.428662 -2.367958    -2.718875
+##         No trabajo
+## Mass      0.048062
+## ChiDist   0.316522
+## Inertia   0.004815
+## Dim. 1    0.313769
+## Dim. 2   -1.504969
+## 
+## 
+##  Columns:
+##             Hogar  Escuela   Oficina Fabrica/taller  Comercio Centro Cultural  Otra vivienda
+## Mass     0.467513 0.104638  0.068877       0.042150  0.169552         0.025265      0.055701
+## ChiDist  0.008413 0.938255  0.686142       0.729330  0.291595         0.295874      0.140737
+## Inertia  0.000033 0.092116  0.032427       0.022420  0.014417         0.002212      0.001103
+## Dim. 1   0.021087 2.458534 -1.603133      -1.690494 -0.300147         0.541088     -0.169866
+## Dim. 2  -0.010266 1.048070  1.768948       1.920421 -1.339493        -0.061688     -0.550535
+##         Hosp. Clinica o Lab Restaurant Deportivo,Gym Bases Transp. Pub, Obra en Const. Otros serv.
+## Mass               0.022224   0.007005      0.004090           0.006307       0.002538    0.002333
+## ChiDist            0.571977   0.356065      0.297232           0.593811       0.731858    0.192152
+## Inertia            0.007271   0.000888      0.000361           0.002224       0.001359    0.000086
+## Dim. 1            -0.360460  -0.704730      0.514553          -1.445843      -1.701857   -0.391919
+## Dim. 2            -2.419962   0.189032      0.641463           1.286723       1.783612    0.431005
+##         Recint. Relig. Via Publica      Otro   No sabe
+## Mass          0.005469    0.003162  0.011158  0.002016
+## ChiDist       0.511611    0.488817  0.400770  0.310329
+## Inertia       0.001431    0.000755  0.001792  0.000194
+## Dim. 1        0.315245   -1.223383 -1.034447  0.060501
+## Dim. 2       -2.540051    0.738081  0.212281 -1.459255</code></pre>
+<p><br></p>
+</div>
+<div id="interpretación." class="section level3">
+<h3>Interpretación.</h3>
+<p><br></p>
+<p>La dimensión 2 actúa como un discriminante a pesar del poco valor de variabilidad (20%) ya que los valores mas altos (extremos) se presentan en la parte superior de la gráfica.</p>
+<p><br></p>
+<div id="analisis-de-la-gráfica-de-correspondencia." class="section level4">
+<h4><em>Analisis de la gráfica de correspondencia.</em></h4>
+<p><em>Cuadrante I</em></p>
+<p>Se observa que las personas que se dedican a los quehaceres del hogar y que no tienen trabajo, tienen como destino más común su hogar, centro cultural o área recreativa, los recintos religiosos y algunos no lo saben.</p>
+<p><em>Cuadrante II</em></p>
+<p>Cuando la persona que viaja busca trabajo, tenia trabajo, pero no trabajó, es jubilada o pensionada, o está incapacitada permanentemente para trabajar, tiene como destino los mercados, comercios,tienda o centro comercial, y hospitales, clínicas, consultorios, etc.</p>
+<p><em>Cuadrante III</em></p>
+<p>Cuando la persona que viaja tiene trabajo, sus destinos mas frecuentes son: Fábrica/taller, Hogar, escuela, oficina, estaciones de transporte público, vía pública, otros lugares, restaurantes, bar, cafetería y otros servicios.</p>
+<p><em>Cuadrante IV</em></p>
+<p>Cuando se es estudiante, los destinos mas frecuentes son: Deportivo/gimnasio y Escuela.</p>
+<p><br></p>
+</div>
+</div>
+<div id="conclusión." class="section level3">
+<h3>Conclusión.</h3>
+<p>En el análisis multivariado es importante tener una visión rápida y de preferencia gráfica del comportamiento de los datos. En nuestro caso, para las dos variables seleccionadas, condición de actividad de la persona (P3_7) y destino de los viajes realizados (P5_11A), una de estas técnicas descriptivas que se adecua muy bien es el análisis de correspondencias, el cual nos permite elaborar un mapa perceptual de las categorías de las variables analizadas en un espacio de pocas dimensiones (2), ya que con dichas dimensiones se tiene un porcentaje alto de variabilidad explicada (96.8%), lo facilita su interpretación gráfica, en donde la mayor o menor distancia entre los puntos reflejan cierto grado de asociación entre las categorías representadas. Seleccionamos esta técnica de análisis porque se aplica a variables categóricas.</p>
+<p><br> <br> <br></p>
+</div>
+</div>
+<div id="análisis-de-correspondencias-de-las-variables-estrato-socioeconómico-estrato-y-duración-del-viaje." class="section level2">
+<h2>2. Análisis de correspondencias de las variables: Estrato socioeconómico (Estrato), y duración del viaje.</h2>
+<p><br></p>
+<div id="metodología.-1" class="section level3">
+<h3>Metodología.</h3>
+<p><br></p>
+<p>La duración de los viajes es una variable que se captó de forma indirecta, ya que se recopilaron los datos de las horas de inicio y fin de cada viaje. La suposición inicial es que los estratos socioeconómicos más bajos utilizan mayor cantidad de tiempo viajando, debido a las limitaciones en la movilidad a las que se encuentran sometidos.</p>
+<p>Las categorías de la variable Estrato son:</p>
+<ul>
+<li>1 Bajo<br />
+</li>
+<li>2 Medio bajo<br />
+</li>
+<li>3 Medio alto<br />
+</li>
+<li>4 Alto</li>
+</ul>
+<p>Comenzamos por lo tanto, por calcular la duración de los viajes en minutos, a partir de las horas de inicio y término.</p>
+<p><br></p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>d1 <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(viajes2<span class="sc">$</span>p5_10_1 <span class="sc">&lt;</span> viajes2<span class="sc">$</span>p5_9_1, </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                    viajes2<span class="sc">$</span>p5_10_1<span class="sc">+</span><span class="dv">24</span>, viajes2<span class="sc">$</span>p5_10_1)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>viajes2<span class="sc">$</span>duracion <span class="ot">&lt;-</span> (d1<span class="sc">-</span>viajes2<span class="sc">$</span>p5_9_1)<span class="sc">*</span><span class="dv">60</span> <span class="sc">+</span> </span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>                       viajes2<span class="sc">$</span>p5_10_2<span class="sc">-</span>viajes2<span class="sc">$</span>p5_9_2</span></code></pre></div>
+<p><br></p>
+<p>Después, dado que se requiere categorizar a la variable continua denominada <em>duracion</em>, se procede a generar variables de rangos de minutos, según los siguientes intervalos:</p>
+<ul>
+<li>De 0 a 15 minutos (d0a15m)</li>
+<li>De 16 a 30 minutos (d16a30m)<br />
+</li>
+<li>De 31 a 60 minutos (d31a60m)<br />
+</li>
+<li>De 61 a 90 minutos (d61a90m)<br />
+</li>
+<li>De 91 a 120 minutos (d91a120m)<br />
+</li>
+<li>Más de 120 minutos (m120m)</li>
+</ul>
+<p><br></p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>viajes2<span class="sc">$</span>d0a15m <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(viajes2<span class="sc">$</span>duracion <span class="sc">&gt;=</span> <span class="dv">0</span> <span class="sc">&amp;</span> viajes2<span class="sc">$</span>duracion <span class="sc">&lt;=</span> <span class="dv">15</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>viajes2<span class="sc">$</span>d16a30m <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(viajes2<span class="sc">$</span>duracion <span class="sc">&gt;=</span> <span class="dv">16</span> <span class="sc">&amp;</span> viajes2<span class="sc">$</span>duracion <span class="sc">&lt;=</span> <span class="dv">30</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>viajes2<span class="sc">$</span>d31a60m <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(viajes2<span class="sc">$</span>duracion <span class="sc">&gt;=</span> <span class="dv">31</span> <span class="sc">&amp;</span> viajes2<span class="sc">$</span>duracion <span class="sc">&lt;=</span> <span class="dv">60</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>viajes2<span class="sc">$</span>d61a90m <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(viajes2<span class="sc">$</span>duracion <span class="sc">&gt;=</span> <span class="dv">61</span> <span class="sc">&amp;</span> viajes2<span class="sc">$</span>duracion <span class="sc">&lt;=</span> <span class="dv">90</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>viajes2<span class="sc">$</span>d91a120m <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(viajes2<span class="sc">$</span>duracion <span class="sc">&gt;=</span> <span class="dv">91</span> <span class="sc">&amp;</span> viajes2<span class="sc">$</span>duracion <span class="sc">&lt;=</span> <span class="dv">120</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>viajes2<span class="sc">$</span>m120m <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(viajes2<span class="sc">$</span>duracion <span class="sc">&gt;=</span> <span class="dv">121</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span></code></pre></div>
+<p><br></p>
+<p>Y con ello se procede a generar la tabla de contingencia de las variables de interés:</p>
+<p><br></p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>tc <span class="ot">&lt;-</span> <span class="fu">sqldf</span>(<span class="st">&quot;SELECT estrato, m120m, d91a120m, d61a90m, d31a60m, d16a30m, </span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="st">        d0a15m, COUNT(*) FROM viajes2 GROUP BY estrato, m120m, d91a120m, </span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="st">        d61a90m, d31a60m, d16a30m, d0a15m&quot;</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>mat_cont <span class="ot">&lt;-</span> <span class="fu">matrix</span>(tc[<span class="dv">1</span><span class="sc">:</span><span class="dv">24</span>,<span class="dv">8</span>], <span class="at">ncol=</span><span class="dv">6</span>, <span class="at">byrow=</span><span class="cn">TRUE</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(mat_cont) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Bajo&quot;</span>, <span class="st">&quot;Medio bajo&quot;</span>, <span class="st">&quot;Medio alto&quot;</span>, <span class="st">&quot;Alto&quot;</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(mat_cont) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;d0a15m&quot;</span>,<span class="st">&quot;d16a30m&quot;</span>,<span class="st">&quot;d31a60m&quot;</span>,<span class="st">&quot;d61a90m&quot;</span>,<span class="st">&quot;d91a120m&quot;</span>,<span class="st">&quot;m120m&quot;</span>)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>mat_cont</span></code></pre></div>
+<pre><code>##            d0a15m d16a30m d31a60m d61a90m d91a120m m120m
+## Bajo         1341    1311     880     490      382   368
+## Medio bajo  92422   80512   63163   32050    21081 12598
+## Medio alto  47149   43047   39984   18226     9115  4749
+## Alto        15211   18335   17204    6635     3455  1886</code></pre>
+<p><br></p>
+<p>Aplicamos la prueba <span class="math inline">\(\chi^2\)</span>, para explorar su comportamiento respecto a la independencia de las categorías:</p>
+<p><br></p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>(mat_cont)</span></code></pre></div>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test
+## 
+## data:  mat_cont
+## X-squared = 3395.3, df = 15, p-value &lt; 2.2e-16</code></pre>
+<p><br></p>
+<p>Donde puede verse que de acuerdo al p-valor &lt; 0.05, se rechaza la hipótesis de independencia, lo que seguramente tendrá impacto directo en la forma en que se aproximen las categorías en la proyección conjunta de los datos en el análisis de correspondencias.</p>
+<p><br></p>
+</div>
+<div id="resultados.-1" class="section level3">
+<h3>Resultados.</h3>
+<p><br></p>
+<p>Se aplica a continuación el análisis de correspondencias nuevamente con la librería <em>ca</em>:</p>
+<p><br></p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>ac_datos <span class="ot">&lt;-</span> <span class="fu">ca</span>(mat_cont, <span class="at">nd =</span> <span class="dv">2</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>ac_datos</span></code></pre></div>
+<pre><code>## 
+##  Principal inertias (eigenvalues):
+##            1        2       3    
+## Value      0.005457 0.00086 7e-05
+## Percentage 85.44%   13.46%  1.1% 
+## 
+## 
+##  Rows:
+##              Bajo Medio bajo Medio alto      Alto
+## Mass     0.008977   0.567775   0.305252  0.117996
+## ChiDist  0.239172   0.057521   0.065411  0.150958
+## Inertia  0.000514   0.001879   0.001306  0.002689
+## Dim. 1   2.260554   0.776101  -0.771900 -1.909552
+## Dim. 2  -5.271619  -0.114956   1.073024 -1.821679
+## 
+## 
+##  Columns:
+##           d0a15m   d16a30m   d31a60m   d61a90m  d91a120m     m120m
+## Mass    0.293688  0.269388  0.228052  0.107979  0.064021  0.036872
+## ChiDist 0.068323  0.031349  0.104899  0.026836  0.110230  0.193895
+## Inertia 0.001371  0.000265  0.002509  0.000078  0.000778  0.001386
+## Dim. 1  0.808069 -0.263787 -1.418698 -0.178480  1.428388  2.308057
+## Dim. 2  1.133408 -0.804079 -0.094627  0.714520 -0.952397 -3.006608</code></pre>
+<p><br></p>
+<p>Que nos arroja los resultados más importantes de la proyección en dos dimensiones (valores propios, varianza explicada, masa, inercia, por renglones y columnas).</p>
+<p>Podemos ver, por ejemplo, que la varianza explicada por la primera coordenada es de poco más del 85%, lo cual significa que el problema de proyección en realidad es casi unidimensional, por lo que hay que darle más importancia a lo visto o representado sobre el primer eje que a lo visto sobre el segundo.</p>
+<p>Los datos también contienen por supuesto las coordenadas de las dos dimensiones para renglones y columnas, las cuales pueden graficarse.</p>
+<p>Tomamos en primer lugar la proyección de los renglones:</p>
+<p><br></p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.ca</span>(ac_datos, <span class="at">what=</span><span class="fu">c</span>(<span class="st">&quot;all&quot;</span>, <span class="st">&quot;none&quot;</span>),</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="at">main=</span><span class="st">&quot;Proyección de los renglones en dos dimensiones&quot;</span>)</span></code></pre></div>
+<p><img src="cap1_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><br></p>
+<p>Y la de las columnas:</p>
+<p><br></p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.ca</span>(ac_datos, <span class="at">what=</span><span class="fu">c</span>(<span class="st">&quot;none&quot;</span>, <span class="st">&quot;all&quot;</span>),</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="at">main=</span><span class="st">&quot;Proyección de las columnas en dos dimensiones&quot;</span>)</span></code></pre></div>
+<p><img src="cap1_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><br></p>
+<p>Para mostrar finalmente, la proyección conjunta de renglones y columnas:</p>
+<p><br></p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ac_datos, ,</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="at">main=</span><span class="st">&quot;Proyección conjunta en dos dimensiones&quot;</span>)</span></code></pre></div>
+<p><img src="cap1_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><br> <br></p>
+</div>
+<div id="interpretación.-1" class="section level3">
+<h3>Interpretación.</h3>
+<p><br></p>
+<p>La inercia (varianza) explicada por las dos dimensiones es de casi 99%, lo que asegura de entrada que los plots anteriores resumen muy bien la información de las correspondencias.</p>
+<p>Por otra parte, de la proyección de los renglones se observa que:</p>
+<ul>
+<li><p>Las categorías se hallan separadas entre sí, es decir, no se aprecia cercanía alguna entre ellas.</p></li>
+<li><p>Se puede observar que el orden de los puntos a lo largo de la dimensión 1, coincide con el orden de las propias categorías de <em>Alto</em> a <em>Bajo</em>, sin que se haya proporcionado al algoritmo más información que la tabla de contingencia, y sin que el resultado tenga que ver con el orden en que se colocaron las filas en dicha matriz. Lo anterior significa que el hecho de que <em>Alto</em> y <em>Bajo</em> se encuentren en los extremos de la gráfica significa que son las categorías que tienen comportamientos contrarios.</p></li>
+<li><p>Finalmente, mencionar que el que unos grupos estén en la parte negativa y otros en la positiva, no tiene ningún significado, solo es interesante analizar las diferencias o similitudes existentes entre ellos.</p></li>
+</ul>
+<p><br></p>
+<p>En cuanto a la proyección de las columnas, se observa lo siguiente:</p>
+<ul>
+<li><p>Se observa una buena diferenciación entre las categorías, excepto entre <em>d16a30m</em> y <em>d61a90m</em>, las cuales se encuentran cercanas en la dimensión 1 (recordemos que las distancias en esta dimensión tienen mucho mayor peso que las distancias sobre el eje vertical), lo que implica cierta semejanza en el comportamiento de ambas dentro del conjunto de datos.</p></li>
+<li><p>A diferencia de la proyección por renglones, en este caso no se aprecia un ordenamiento natural de las categorías, estando en este caso <em>d31a60m</em> y <em>m120m</em> en los extremos de la proyección.</p></li>
+</ul>
+<p><br></p>
+<p>Luego, de la proyección conjunta se observa lo siguiente:</p>
+<ul>
+<li><p>Siempre tomando como base las distancias sobre el eje horizontal, por ser el más relevante, se aprecia mucha cercanía entre las categorías <em>Bajo</em> y <em>m120m</em>. La siguiente categoría de duración más cercana al estrato <em>Bajo</em> es <em>d91a120m</em>. Por otra parte, cabe resaltar que el estrato más cercano a la categoría <em>d91a120m</em> es el <em>Medio Bajo</em>. Lo anterior refuerza la suposición inicial, de que los estratos socioeconómicos menos favorecidos emplean mayor tiempo en trasladarse. El estrato <em>Medio bajo</em> es muy cercano a <em>d0a15m</em>, lo que podría explicarse recordando que se captaron viajes a pie, en los cuales puede estar la mayor frecuencia de dicha duración.</p></li>
+<li><p>En el centro de la gráfica se aprecia cierta cercanía entre el estrato <em>Medio alto</em> con <em>d16a30m</em> y <em>d61a90</em>, e incluso con <em>d31a60m</em>, lo que no deja muy claro el comportamiento de este estrato.</p></li>
+<li><p>Por otro lado, en el extremo izquierdo de la proyección sí es posible apreciar que el estrato <em>Alto</em> tiene únicamente una categoría de duración que es la más aproximada, <em>d31a60m</em>. Esto es consistente con la hipótesis inicial, pues mientras los estratos bajos usan mucho tiempo en sus traslados, el estrato <em>Alto</em> tiende a demorarse cuando mucho una hora.</p></li>
+</ul>
+<p>Debemos tener presente, no obstante, que todas estas interpretaciones representan sólo un primer acercamiento a las relaciones entre estas variables con la herrmienta de análisis de correspondencias, y no consideran efectos subyacentes debido a otras causas.</p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
