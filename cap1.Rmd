@@ -9,7 +9,7 @@ title: "**Análisis Multivariado**"
 <br>
     
     
-## 1. Análisis de Correspondencias de las Variables: Condición de actividad de la persona (P3_7), y Destino de los viajes realizados (P5_11A). 
+## **1. Análisis de Correspondencias de las Variables: Condición de actividad de la persona (P3_7), y Destino de los viajes realizados (P5_11A).**
 
 <br>
 
@@ -131,7 +131,7 @@ corres
 <br>
 
 La dimensión 2 actúa como un discriminante a pesar del poco valor de variabilidad (20%)
-ya que los valores mas altos (extremos) se presentan en la parte superior de la gráfica.
+ya que los valores mas altos (extremos) se presentan en la parte superior de la gráfica. La dimension 1 representa el 76.8% de la variabilidad de los datos.
 
 <br>
 
@@ -154,6 +154,27 @@ Cuando la persona que viaja tiene trabajo, sus destinos mas frecuentes son: Fáb
 
 Cuando se es estudiante, los destinos mas frecuentes son: Deportivo/gimnasio y Escuela.
 
+Al ser las variables analizadas dependientes conforme a la prueba de hipotesis $\chi^2$.
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F} 
+
+via <- read.csv("bd/tviaje3.csv")
+viajes3 <- sqldf("SELECT via.*, tsdem.p3_7 FROM via LEFT JOIN
+                 tsdem ON via.id_soc = tsdem.id_soc")
+rm(via)
+
+# Gráfica de dia del viaje y condicion de actividad del pasajero
+
+analisis_2<-table(viajes3$p5_3, viajes3$p3_7)
+
+rownames(analisis_2)=c("viaje entre semana","viaje en sabado")
+
+barplot(analisis_2,names=c("trabajo","tenia_trab","busca","estudia","hogar","jubilado","incap.","no trab"),width = 0.4, xlim = c(0, 3.5),legend=TRUE,xlab="Condicion de actividad",ylab="Frecuencia relativa",col=c("yellow","orange"),main="Viajes de personas por día según condición de actividad")
+
+```
+
 <br>
 
 ### Conclusión.
@@ -168,7 +189,7 @@ En  el  análisis  multivariado  es importante  tener  una  visión rápida  y  
 
 
 
-## 2. Análisis de correspondencias de las variables: Estrato socioeconómico (Estrato), y duración del viaje.
+## **2. Análisis de correspondencias de las variables: Estrato sociodemográfico (Estrato), y duración del viaje.**
 
 <br>
 
@@ -176,7 +197,7 @@ En  el  análisis  multivariado  es importante  tener  una  visión rápida  y  
 
 <br>
 
-La duración de los viajes es una variable que se captó de forma indirecta, ya que se recopilaron los datos de las horas de inicio y fin de cada viaje. La suposición inicial es que los estratos socioeconómicos más bajos utilizan mayor cantidad de tiempo viajando, debido a las limitaciones en la movilidad a las que se encuentran sometidos.
+La duración de los viajes es una variable que se captó de forma indirecta, ya que se recopilaron los datos de las horas de inicio y fin de cada viaje. La suposición inicial es que los estratos sociodemográficos más bajos utilizan mayor cantidad de tiempo viajando, debido a las limitaciones en la movilidad a las que se encuentran sometidos.
 
 Las categorías de la variable Estrato son: 
 
@@ -359,13 +380,632 @@ En cuanto a la proyección de las columnas, se observa lo siguiente:
 
 Luego, de la proyección conjunta se observa lo siguiente:
 
-  - Siempre tomando como base las distancias sobre el eje horizontal, por ser el más relevante, se aprecia mucha cercanía entre las categorías *Bajo* y *m120m*. La siguiente categoría de duración más cercana al estrato *Bajo* es *d91a120m*. Por otra parte, cabe resaltar que el estrato más cercano a la categoría *d91a120m* es el *Medio Bajo*. Lo anterior refuerza la suposición inicial, de que los estratos socioeconómicos menos favorecidos emplean mayor tiempo en trasladarse. El estrato *Medio bajo* es  muy cercano a *d0a15m*, lo que podría explicarse recordando que se captaron viajes a pie, en los cuales puede estar la mayor frecuencia de dicha duración.
+  - Siempre tomando como base las distancias sobre el eje horizontal, por ser el más relevante, se aprecia mucha cercanía entre las categorías *Bajo* y *m120m*. La siguiente categoría de duración más cercana al estrato *Bajo* es *d91a120m*. Por otra parte, cabe resaltar que el estrato más cercano a la categoría *d91a120m* es el *Medio Bajo*. Lo anterior refuerza la suposición inicial, de que los estratos sociodemográficos menos favorecidos emplean mayor tiempo en trasladarse. El estrato *Medio bajo* es  muy cercano a *d0a15m*, lo que podría explicarse recordando que se captaron viajes a pie, en los cuales puede estar la mayor frecuencia de dicha duración.
   
   - En el centro de la gráfica se aprecia cierta cercanía entre el estrato *Medio alto* con *d16a30m* y *d61a90*, e incluso con *d31a60m*, lo que no deja muy claro el comportamiento de este estrato.
   
   - Por otro lado, en el extremo izquierdo de la proyección sí es posible apreciar que el estrato *Alto* tiene únicamente una categoría de duración que es la más aproximada, *d31a60m*. Esto es consistente con la hipótesis inicial, pues mientras los estratos bajos usan mucho tiempo en sus traslados, el estrato *Alto* tiende a demorarse cuando mucho una hora. 
 
 Debemos tener presente, no obstante, que todas estas interpretaciones representan sólo un primer acercamiento a las relaciones entre estas variables con la herrmienta de análisis de correspondencias, y no consideran efectos subyacentes debido a otras causas.
+
+
+<br>
+<br>
+<br>
+
+## **3. Análisis de Factores de variables seleccionadas de la encuesta.**
+
+<br>
+
+### Metodología. 
+
+<br>
+
+Realización de análisis factorial para detectar variables latentes que resumen la variabilidad entre el conjunto de variables involucradas en la encuesta origen-destino de la zona metropolitana del valle de México
+
+El conjunto de variables en este análisis es:
+  - SEXO. Sexo de la persona
+  - EDAD. Edad de la persona
+  - ESTRATO_SOCIO. Estrato sociodemográfico de la persona
+  - OCUPACION. Ocupación de la persona
+  - ESTUDIOS. Grado de estudios de la persona
+  - NUM_VIAJES. Cantidad de viajes realizados entre semana
+  - MEDIO_TRANSPORTE. Medio de transporte que utilizó
+  - TIEMPO_MINUTOS. Tiempo en minutos del viaje realizado (tiempo de espera y trasbordo)
+  
+<br>
+
+Librerías, lectura y acondicionamiento de datos.
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+#Librerías
+library(ggplot2)
+library(ggcorrplot)
+library(psych)
+library(MASS) # Prueba estadística
+library(stats) # Análisis de factores
+library(psych)
+library(GPArotation)
+
+base<-read.csv(file="bd/DatosAF.csv")
+base<-base[,1:8]
+head(base) # Primeras filas de los datos
+colnames(base)<-c("SEXO","EDAD","ESTRATO_SOCIO","OCUPACION","ESTUDIOS","NUM_VIAJES","MEDIO_TRANSPORTE","TIEMPO_MINUTOS")
+head(base) # Primeras filas de los datos con las columnas renombradas
+
+# Se categorizan los 99's en NA
+base[base==99]<-NA
+summary(base)
+baseLW<-na.omit(base) # Se omiten los NA's
+head(baseLW)
+
+mat_base<-as.matrix(baseLW) 
+
+idx<-complete.cases(baseLW) # Se obtiene el vector lógico de casos completos
+#idx
+datos_compl<-mat_base[idx,] # Datos completos
+
+```
+
+<br>
+
+Se obtiene la matriz de correlaciones:
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+n=dim(datos_compl)[1]
+p=dim(datos_compl)[2]
+dim(datos_compl)
+mat_cor <- round(cor(datos_compl),3) # Se obtiene la matriz de correlación
+mat_cor
+
+# Se grafica la matriz de correlación
+
+ggcorrplot(mat_cor,type="lower",lab = TRUE, tl.cex = 10,
+           ggtheme = ggplot2::theme_gray,
+           colors = c("blue", "white", "deeppink"))
+
+# Se calcula el determinante:
+det(mat_cor)
+
+```
+
+<br>
+
+
+COMENTARIOS: Los resultados obtenidos tanto de la matriz de correlación como del determinante,
+indican que existe bajo nivel de colinealidad.
+
+Se aplica la prueba de Bartlett que se utiliza para probar la hipótesis nula 
+que afirma que las variables no están correlacionadas en la población o el supuesto de 
+homogeneidad de varianzas:
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+p_fac<-cortest.bartlett(mat_cor,n=nrow(baseLW))
+p_fac
+p_fac$p
+
+```
+
+<br>
+
+De acuerdo a los resultados obtenidos se podría interpretar la presencia de
+multicolinealidad en el conjunto de variables, ya que el p-valor es menor a 0.05.
+
+Se aplica otra prueba de Kaiser-Meyer-Olkin en donde los resultados son valorados como:
+
+  - 0.00 a 0.49 inaceptable.  
+  - 0.50 a 0.59 escasamente regular.  
+  - 0,60 a 0,69 regular.  
+  - 0.70 a 0.79 medio.  
+  - 0,80 a 0,89 meritorio.  
+  - 0.90 a 1.00 maravilloso.  
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+KMO(mat_cor)
+
+```
+
+<br>
+
+De acuerdo a los resultados de la prueba KMO, se observa que existe un bajo nivel de multicolinealidad entre las variables.
+
+<br>
+
+
+### Resultados. 
+
+<br>
+
+Se aplica el análisis de factores.
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+# minres --> modelo mínimo residuo
+# Se determina el número de factores
+
+scree(mat_cor)
+fa.parallel(mat_cor,n.obs=nrow(datos_compl),fa="fa",fm="minres")
+
+```
+
+<br>
+
+
+COMENTARIOS: De acuerdo a los resultados gráficos se observa que a partir de 2 factores
+se pueden utilizar, sin embargo con 4 factores se podría considerar para un patrón ideal.
+
+De acuerdo a estos resultados se considerarán 4 factores.
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+#Se ejecutan las Rotaciones
+datos.fa.none <- factanal(datos_compl, factors = 4, rotation = "none")
+datos.fa.varimax <- factanal(datos_compl, factors = 4, rotation = "varimax")
+datos.fa.promax <- factanal(datos_compl, factors = 4, rotation = "promax")
+
+par(mfrow = c(1,3))
+plot(datos.fa.none$loadings,pch=21,            
+     bg="orange",
+     ylim = c(-1,1),
+     xlim = c(-1,1),
+     main = "No rotación")
+abline(h = 0, v = 0)
+
+plot(datos.fa.varimax$loadings,pch=21,            
+     bg="magenta",
+     ylim = c(-1,1),
+     xlim = c(-1,1),
+     main = "Rotación Varimax")
+
+text(datos.fa.varimax$loadings-0.08,
+     colnames(baseLW),
+     col="blue")
+abline(h = 0, v = 0)
+
+plot(datos.fa.promax$loadings,pch=21,            
+     bg="cyan", 
+     ylim = c(-1,1),
+     xlim = c(-1,1),
+     main = "Rotación Promax")
+abline(h = 0, v = 0)
+
+par(mfrow = c(1,1))
+modeloAF<-fa(datos_compl,rotate = "varimax",nfactors = 4,fm="minres")
+plot(modeloAF)
+fa.diagram(modeloAF)
+modeloAF$uniquenesses
+modeloAF$communalities
+
+#####
+modeloAF_re<-factanal(datos_compl,factors=4,rotation = "varimax",scores="regression")
+modeloAF_re
+
+```
+
+<br>
+
+COMENTARIOS: Derivado de estos resultados, se observa que el factor 1 explica el 15% de la varianza, el factor 2 explica el 13%, el factor 3 explica el 7% y  el factor 4 explica el 3%.
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+diagram(modeloAF_re)
+
+#Se obtienen los scores
+scoresAF<-modeloAF_re$scores
+summary(scoresAF)
+
+#Se obtienen los loadings
+loadingsAF<-modeloAF$loadings
+summary(loadingsAF)
+plot(loadingsAF,pch=21,            
+     bg="purple",         
+     cex=1,) # Dibujar el área de visualización
+text(loadingsAF,labels=names(baseLW),cex=.7) # Añadir las variables
+abline(h = 0, v = 0,col = "cornflowerblue",lwd = 2)
+
+```
+
+
+
+
+
+
+<br>
+<br>
+<br>
+
+## **4. Análisis de Correspondencias entre las variables: Estrato sociodemográfico vs Tipo de Transporte (P5_14).**
+
+<br>
+
+### Metodología. 
+
+<br>
+
+El propósito del análisis de correspondencia entre estrato socioecónomico y el tipo de transporte de la Encuesta Origen destino 2017, es observar entre los diferentes estratos que transporte se usa más comúnmente en la movilidad urbana.
+
+Se considera importante esta correspondencia ya que en la CDMX y áreas conurbadas en la encuesta se clasifican 20 tipos de transporte:
+"Automovil", "Colectivo", "Taxi_I", "Taxi_S,", "Metro", "Autobus_RTP", "Bicicleta",
+"Autobus", "Moto", "Trolebus", "Metrobus", "Tren_L", "Tren_S", "Caminar", "Mexicable", "Bicitaxi", "Mototaxi", "T.Escolar", "T.Personal", "otro". 
+
+En lo referente a la variable de estrato se clasifican 4 estratos sociodemográficos: "Bajo", "Medio Bajo", "Medio Alto" y "Alto".
+
+
+Primero, invocamos librerías y leemos los datos.
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+library("MASS")
+library("stats")
+library("scatterplot3d")
+library("smacof")
+
+datosC <- read.csv("bd/ttransporte2.csv", header = TRUE)
+
+head(datosC)
+
+```
+
+<br>
+
+Se calcula la tabla de contingencia entre la variable de estrato y tipo de transporte.
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+tabla_T<-table(datosC$estrato,datosC$p5_14)
+tabla_T
+
+```
+
+<br>
+
+Se calcula la $\chi^2$ para probar la independencia de los renglones y columnas de la tabla de contingencia y la inercia total (medida de la  variabilidad total de los datos en la tabla).
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+n<-sum(tabla_T)
+n
+chiR<-chisq.test(tabla_T,simulate.p.value=T) # Se tuvo que usar esta alternativa debido al 
+                                       # warning : Chi-squared approximation may be incorrect
+chiR
+inetot<-chiR$statistic/n
+inetot
+
+```
+
+<br>
+
+Tenemos que el valor p es muy pequeño, por lo tanto se rechaza la hipótesis de independencia.
+
+Se calcula la matriz F de frecuencias relativas o matriz de correspondencia.
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+nrow<-nrow(tabla_T)
+ncol<-ncol(tabla_T)
+F_Esp_V<-(tabla_T)/n
+F_Esp_V
+
+```
+
+<br>
+
+Se calculan las frecuencias relativas de las filas y de las columnas de F o tambien llamadas masas (las ri y las cj).
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+rtot<-apply(F_Esp_V,1,sum)
+ctot<-apply(F_Esp_V,2,sum)
+
+```
+
+<br>
+
+Los vectores obtenidos se  colocan en las matrices diagonales correspondientes (Dr y Dc).
+
+<br>
+
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+Dr<-diag(rtot)
+str(Dr)
+Dc<-diag(ctot)
+str(Dc)
+
+```
+
+<br>
+
+Se calcula la matriz de perfiles por fila (R).
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+table.pro<-F_Esp_V/rtot  #matriz R de renglones
+
+table.pro
+
+```
+
+<br>
+
+Se calcula la matriz de perfiles por columna (Rc).
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+table.pcol<- t(t(F_Esp_V)/ctot)  #matriz R de columnas
+table.pcol
+
+```
+
+<br>
+
+Se calcula la $\chi^2$ para verificar la independencia de los renglones y columnas de la tabla de contingencia y la inercia total (medida de la variabilidad total de los datos en la tabla)
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+t.rowsum<-n*rtot #suma de las entradas por fila de la tabla de contingencia
+t.colsum<-n*ctot #suma de las entradas por columna de la tabla de contingencia  
+tabla_exp<-t.rowsum%o%t.colsum/n  # matriz de frecuencias esperadas
+tabla_exp
+chi2<- sum((tabla_T-tabla_exp)^2/tabla_exp)
+chi2
+inetot1<-chi2/n
+inetot1
+
+```
+
+<br>
+
+Se calcula la matriz $Z$.
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+Z<-(sqrt(solve(Dr)))%*%F_Esp_V%*%(sqrt(solve(Dc)))
+Z
+
+```
+
+<br>
+
+Se obtienen los vectores propios y valores propios mediante la descomposicion en valores singulares de $Z$.
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+dvalsing<-svd(Z)
+
+dvalsing
+
+```
+
+<br>
+
+Se obtienen las representaciones de las filas y columnas en un espacio de tres dimensiones considerando los vectores propios  obtenidos de la dvs.
+
+Se consideran solo los vectores propios asociados a valores propios distintos de 1, en este caso se consideran las columnas 2,3 y 4 de las matrices $U$ y $V$ de la dvs.
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+ind<-c(2,3,4)
+
+```
+
+<br>
+
+Representacion de las filas en tres dimensiones.
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+Cr<-(sqrt(solve(Dr)))%*%Z%*%dvalsing$v[,ind]
+Cr
+
+```
+
+<br>
+
+Representación de las columnas en tres dimensiones.
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+Cc<-(sqrt(solve(Dc)))%*%t(Z)%*%dvalsing$u[,ind]
+Cc
+
+```
+
+<br>
+
+Se calcula la proporción de la inercia explicada por las dos dimensiones (asociadas a valores propios mas grandes distintos de uno).
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+vp<-(dvalsing$d)^2
+vp_dist1<-vp[-1]
+vp_dist1
+var_expl <- sum(vp_dist1[1:2])/sum(vp_dist1)
+var_expl
+
+```
+
+<br>
+
+Se observa una varianza explicada alta cercana a 1.
+
+<br>
+
+### Resultados.
+
+<br>
+
+Se obtiene la representacion conjunta de los renglones y columnas en el espacio de dos dimensiones:
+
+<br>
+
+```{r,fig.width=10, fig.height=10}
+
+par(pty="s")
+
+plot(Cr,xlim=range(Cr[,1],Cc[,1]),ylim=range(Cr[,1],Cc[,1]),
+     xlab="Coordenada 1",ylab="Coordenada 2",lwd=2)
+points(Cc,col=4)
+
+text(Cr,labels=c("Bajo","Medio Bajo","Medio Alto","Alto"),col=1,lwd=2,cex = 1.2)
+text(Cc,labels=c("Automovil","Colectivo","Taxi_I","Taxi_S,","Metro","Autobus_RTP","Bicicleta","Autobus","Moto","Trolebus","Metrobus","Tren_L","Tren_S","Caminar","Mexicable","Bicitaxi","Mototaxi","T.Escolar","T.Personal","otro"),col="blue",lwd=4,cex = 1.2)
+
+abline(h=0,lty=2)
+abline(v=0,lty=2)
+
+```
+
+<br>
+
+Se calculan las distancias $\chi^2$ de cada renglón de R a su centroide: (Ra-c)'Dc^-1(Ra-c).
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+dist.chicua.ren<-sqrt(apply((t(table.pro)-ctot)^2/ctot,2,sum))
+dist.chicua.ren
+
+```
+
+<br>
+
+Se calcula la inercia de cada renglón, que se obtiene multiplicando las distancia chi cuadrada a su centroide (al cuadrado) por su masa correspondiente:
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+inercia.ren<-((dist.chicua.ren)^2) *rtot
+inercia.ren
+
+```
+
+<br>
+
+Se calculan las distancias $\chi^2$ de cada columna de R a su centroide: (Ra-r)'Dr^-1(Ra-r).
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+dist.chicua.col<-sqrt(apply(((table.pcol)-rtot)^2/rtot,2,sum))
+dist.chicua.col
+
+```
+
+<br>
+
+Se calcula la inercia de cada columna, que se obtiene  multiplicando las distancia $\chi^2$ a su centroide (al cuadrado) por su masa correspondiente:
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+inercia.col<-((dist.chicua.col)^2) *ctot
+inercia.col
+
+sum(inercia.ren)
+sum(inercia.col)
+
+```
+
+<br>
+<br>
+
+Ahora vamos usar la función "ca" de R para realizar análisis de correspondencia sobre la misma tabla de contingencia.
+
+**Nota:** Esta función trabaja directamente con  la matriz tabla_T, la cual ya no tiene un valor propio de 1. 
+
+<br>
+
+```{r,fig.width=8, fig.height=8 }
+
+corres<-ca(tabla_T, nd = 2)
+
+Cr1<-corres$rowcoord #coordenadas de las filas
+Cc1<-corres$colcoord  #coordenadas de las columnas
+
+plot(corres,main="Encuesta Origen Destino 2017",cex.main=2,sub="Análisis de Correspondencia Estrato vs Tipo de Transporte",cex.sub=1.5)
+
+```
+
+<br>
+
+Se obtiene la representacion conjunta de los renglones y columnas en el espacio de dos dimensiones.
+
+<br>
+
+```{r,fig.width=10, fig.height=10 }
+
+par(pty="s")
+
+plot(Cr1,xlim=range(Cr1[,1],Cc1[,1]),ylim=range(Cr1[,1],Cc1[,1]),
+     xlab="Coordenada 1",ylab="Coordenada 2",lwd=2,main="Encuesta Origen Destino 2017",cex.main=2,sub="Análisís de Correspondencia Estrato vs Tipo de Transporte",cex.sub=1.5)
+points(Cc1,col=2)
+
+text(Cr1,labels=c("Bajo","Medio Bajo","Medio Alto","Alto"),col="red",lwd=2,cex=1.5)
+text(Cc1,labels=c("Automovil","Colectivo","Taxi_I","Taxi_S,","Metro","Autobus_RTP","Bicicleta","Autobus","Moto","Trolebus","Metrobus","Tren_L","Tren_S","Caminar","Mexicable","Bicitaxi","Mototaxi","T.Escolar","T.Personal","otro"),col="blue",lwd=4,cex = 1.5)
+
+abline(h=0,lty=2)
+abline(v=0,lty=2)
+
+```
+
+<br>
+
+Las proyecciones por filas, columnas y conjuntas de filas y columnas; comprueban que en la proyección por filas,las categorías están claramente separadas. En la variable del estrato, las primeras categorías de bajo y medio bajo están muy cercanas. Sin embargo, el estrato medio alto y alto estan separados. El tipo de transporte está también muy claramente identificado en la correspondencia a cada estrato socioecónomico.
+
+En el caso del estrato alto se observa claramente la correspondencia con el automóvil.
+
+En el estrato bajo hay una correspondecia cercana al colectivo, bicitaxi, autobús y moto. Para el estrato medio bajo, hay correspondencia cercana a los del estrato bajo.
+
+En el estrato medio alto hay una correspondecia cercana al metro, taxi de sitio y autobús RTP y tren ligero.
+
 
 
 
