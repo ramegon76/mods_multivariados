@@ -585,7 +585,7 @@ div.tocify {
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>corres <span class="ot">&lt;-</span><span class="fu">ca</span> (analisis_1,<span class="at">nd=</span><span class="dv">2</span>)</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(corres)</span></code></pre></div>
-<p><img src="cap1_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p><img src="cap1_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Presenta informacion del modelo de análisis de correspondencia</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>corres</span></code></pre></div>
 <pre><code>## 
@@ -660,7 +660,7 @@ div.tocify {
 <span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(analisis_2)<span class="ot">=</span><span class="fu">c</span>(<span class="st">&quot;viaje entre semana&quot;</span>,<span class="st">&quot;viaje en sabado&quot;</span>)</span>
 <span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(analisis_2,<span class="at">names=</span><span class="fu">c</span>(<span class="st">&quot;trabajo&quot;</span>,<span class="st">&quot;tenia_trab&quot;</span>,<span class="st">&quot;busca&quot;</span>,<span class="st">&quot;estudia&quot;</span>,<span class="st">&quot;hogar&quot;</span>,<span class="st">&quot;jubilado&quot;</span>,<span class="st">&quot;incap.&quot;</span>,<span class="st">&quot;no trab&quot;</span>),<span class="at">width =</span> <span class="fl">0.4</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">3.5</span>),<span class="at">legend=</span><span class="cn">TRUE</span>,<span class="at">xlab=</span><span class="st">&quot;Condicion de actividad&quot;</span>,<span class="at">ylab=</span><span class="st">&quot;Frecuencia relativa&quot;</span>,<span class="at">col=</span><span class="fu">c</span>(<span class="st">&quot;yellow&quot;</span>,<span class="st">&quot;orange&quot;</span>),<span class="at">main=</span><span class="st">&quot;Viajes de personas por día según condición de actividad&quot;</span>)</span></code></pre></div>
-<p><img src="cap1_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="cap1_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <p><br></p>
 </div>
 </div>
@@ -781,19 +781,19 @@ div.tocify {
 <p><br></p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.ca</span>(ac_datos, <span class="at">what=</span><span class="fu">c</span>(<span class="st">&quot;all&quot;</span>, <span class="st">&quot;none&quot;</span>),</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="at">main=</span><span class="st">&quot;Proyección de los renglones en dos dimensiones&quot;</span>)</span></code></pre></div>
-<p><img src="cap1_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="cap1_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <p><br></p>
 <p>Y la de las columnas:</p>
 <p><br></p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.ca</span>(ac_datos, <span class="at">what=</span><span class="fu">c</span>(<span class="st">&quot;none&quot;</span>, <span class="st">&quot;all&quot;</span>),</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="at">main=</span><span class="st">&quot;Proyección de las columnas en dos dimensiones&quot;</span>)</span></code></pre></div>
-<p><img src="cap1_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="cap1_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <p><br></p>
 <p>Para mostrar finalmente, la proyección conjunta de renglones y columnas:</p>
 <p><br></p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ac_datos, ,</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="at">main=</span><span class="st">&quot;Proyección conjunta en dos dimensiones&quot;</span>)</span></code></pre></div>
-<p><img src="cap1_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="cap1_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <p><br> <br></p>
 </div>
 <div id="interpretación.-1" class="section level3">
@@ -927,7 +927,7 @@ div.tocify {
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggcorrplot</span>(mat_cor,<span class="at">type=</span><span class="st">&quot;lower&quot;</span>,<span class="at">lab =</span> <span class="cn">TRUE</span>, <span class="at">tl.cex =</span> <span class="dv">10</span>,</span>
 <span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">ggtheme =</span> ggplot2<span class="sc">::</span>theme_gray,</span>
 <span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">colors =</span> <span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;white&quot;</span>, <span class="st">&quot;deeppink&quot;</span>))</span></code></pre></div>
-<p><img src="cap1_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p><img src="cap1_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Se calcula el determinante:</span></span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">det</span>(mat_cor)</span></code></pre></div>
 <pre><code>## [1] 0.6264238</code></pre>
@@ -985,9 +985,9 @@ div.tocify {
 <span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Se determina el número de factores</span></span>
 <span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="fu">scree</span>(mat_cor)</span></code></pre></div>
-<p><img src="cap1_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p><img src="cap1_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fa.parallel</span>(mat_cor,<span class="at">n.obs=</span><span class="fu">nrow</span>(datos_compl),<span class="at">fa=</span><span class="st">&quot;fa&quot;</span>,<span class="at">fm=</span><span class="st">&quot;minres&quot;</span>)</span></code></pre></div>
-<p><img src="cap1_files/figure-html/unnamed-chunk-17-2.png" width="672" /></p>
+<p><img src="cap1_files/figure-html/unnamed-chunk-18-2.png" width="672" /></p>
 <pre><code>## Parallel analysis suggests that the number of factors =  4  and the number of components =  NA</code></pre>
 <p><br></p>
 <p>COMENTARIOS: De acuerdo a los resultados gráficos se observa que a partir de 2 factores se pueden utilizar, sin embargo con 4 factores se podría considerar para un patrón ideal.</p>
@@ -1023,13 +1023,13 @@ div.tocify {
 <span id="cb48-28"><a href="#cb48-28" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>),</span>
 <span id="cb48-29"><a href="#cb48-29" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Rotación Promax&quot;</span>)</span>
 <span id="cb48-30"><a href="#cb48-30" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">v =</span> <span class="dv">0</span>)</span></code></pre></div>
-<p><img src="cap1_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p><img src="cap1_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 <div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
 <span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>modeloAF<span class="ot">&lt;-</span><span class="fu">fa</span>(datos_compl,<span class="at">rotate =</span> <span class="st">&quot;varimax&quot;</span>,<span class="at">nfactors =</span> <span class="dv">4</span>,<span class="at">fm=</span><span class="st">&quot;minres&quot;</span>)</span>
 <span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(modeloAF)</span></code></pre></div>
-<p><img src="cap1_files/figure-html/unnamed-chunk-18-2.png" width="672" /></p>
+<p><img src="cap1_files/figure-html/unnamed-chunk-19-2.png" width="672" /></p>
 <div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fa.diagram</span>(modeloAF)</span></code></pre></div>
-<p><img src="cap1_files/figure-html/unnamed-chunk-18-3.png" width="672" /></p>
+<p><img src="cap1_files/figure-html/unnamed-chunk-19-3.png" width="672" /></p>
 <div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>modeloAF<span class="sc">$</span>uniquenesses</span></code></pre></div>
 <pre><code>##             SEXO             EDAD    ESTRATO_SOCIO        OCUPACION         ESTUDIOS 
 ##      0.741177481      0.916473638      0.782468240      0.746111214      0.004914492 
@@ -1102,7 +1102,7 @@ div.tocify {
 <span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">cex=</span><span class="dv">1</span>,) <span class="co"># Dibujar el área de visualización</span></span>
 <span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(loadingsAF,<span class="at">labels=</span><span class="fu">names</span>(baseLW),<span class="at">cex=</span>.<span class="dv">7</span>) <span class="co"># Añadir las variables</span></span>
 <span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">v =</span> <span class="dv">0</span>,<span class="at">col =</span> <span class="st">&quot;cornflowerblue&quot;</span>,<span class="at">lwd =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="cap1_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p><img src="cap1_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <p><br> <br> <br></p>
 </div>
 </div>
@@ -1411,7 +1411,7 @@ div.tocify {
 <span id="cb102-9"><a href="#cb102-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb102-10"><a href="#cb102-10" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="dv">0</span>,<span class="at">lty=</span><span class="dv">2</span>)</span>
 <span id="cb102-11"><a href="#cb102-11" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">0</span>,<span class="at">lty=</span><span class="dv">2</span>)</span></code></pre></div>
-<p><img src="cap1_files/figure-html/unnamed-chunk-35-1.png" width="960" /></p>
+<p><img src="cap1_files/figure-html/unnamed-chunk-36-1.png" width="960" /></p>
 <p><br></p>
 <p>Se calculan las distancias <span class="math inline">\(\chi^2\)</span> de cada renglón de R a su centroide: (Ra-c)’Dc^-1(Ra-c).</p>
 <p><br></p>
@@ -1461,8 +1461,8 @@ div.tocify {
 <span id="cb115-3"><a href="#cb115-3" aria-hidden="true" tabindex="-1"></a>Cr1<span class="ot">&lt;-</span>corres<span class="sc">$</span>rowcoord <span class="co">#coordenadas de las filas</span></span>
 <span id="cb115-4"><a href="#cb115-4" aria-hidden="true" tabindex="-1"></a>Cc1<span class="ot">&lt;-</span>corres<span class="sc">$</span>colcoord  <span class="co">#coordenadas de las columnas</span></span>
 <span id="cb115-5"><a href="#cb115-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb115-6"><a href="#cb115-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(corres,<span class="at">main=</span><span class="st">&quot;Encuesta Origen Destino 2017&quot;</span>,<span class="at">cex.main=</span><span class="dv">2</span>,<span class="at">sub=</span><span class="st">&quot;Análisís de Correspondencia Estrato vs Tipo de Transporte&quot;</span>,<span class="at">cex.sub=</span><span class="fl">1.5</span>)</span></code></pre></div>
-<p><img src="cap1_files/figure-html/unnamed-chunk-40-1.png" width="768" /></p>
+<span id="cb115-6"><a href="#cb115-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(corres,<span class="at">main=</span><span class="st">&quot;Encuesta Origen Destino 2017&quot;</span>,<span class="at">cex.main=</span><span class="dv">2</span>,<span class="at">sub=</span><span class="st">&quot;Análisis de Correspondencia Estrato vs Tipo de Transporte&quot;</span>,<span class="at">cex.sub=</span><span class="fl">1.5</span>)</span></code></pre></div>
+<p><img src="cap1_files/figure-html/unnamed-chunk-41-1.png" width="768" /></p>
 <p><br></p>
 <p>Se obtiene la representacion conjunta de los renglones y columnas en el espacio de dos dimensiones.</p>
 <p><br></p>
@@ -1477,12 +1477,166 @@ div.tocify {
 <span id="cb116-9"><a href="#cb116-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb116-10"><a href="#cb116-10" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="dv">0</span>,<span class="at">lty=</span><span class="dv">2</span>)</span>
 <span id="cb116-11"><a href="#cb116-11" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">0</span>,<span class="at">lty=</span><span class="dv">2</span>)</span></code></pre></div>
-<p><img src="cap1_files/figure-html/unnamed-chunk-41-1.png" width="960" /></p>
+<p><img src="cap1_files/figure-html/unnamed-chunk-42-1.png" width="960" /></p>
 <p><br></p>
 <p>Las proyecciones por filas, columnas y conjuntas de filas y columnas; comprueban que en la proyección por filas,las categorías están claramente separadas. En la variable del estrato, las primeras categorías de bajo y medio bajo están muy cercanas. Sin embargo, el estrato medio alto y alto estan separados. El tipo de transporte está también muy claramente identificado en la correspondencia a cada estrato socioecónomico.</p>
 <p>En el caso del estrato alto se observa claramente la correspondencia con el automóvil.</p>
 <p>En el estrato bajo hay una correspondecia cercana al colectivo, bicitaxi, autobús y moto. Para el estrato medio bajo, hay correspondencia cercana a los del estrato bajo.</p>
 <p>En el estrato medio alto hay una correspondecia cercana al metro, taxi de sitio y autobús RTP y tren ligero.</p>
+<p><br> <br> <br></p>
+</div>
+</div>
+<div id="análisis-de-correlación-canónica-de-variables-seleccionadas." class="section level2">
+<h2><strong>5. Análisis de Correlación Canónica de variables seleccionadas.</strong></h2>
+<p><br></p>
+<div id="metodología.-4" class="section level3">
+<h3>Metodología.</h3>
+<p><br></p>
+<p>El análisis de correlación canónica es utilizado cuando un conjunto de variables se puede dividir en dos grupos homogéneos en función de algún criterio ya sea económico, demográfico, social, etc., y se desea estudiar la relación entre ambos conjuntos de variables, así como cuantificar el número de dimensiones independientes existentes en esta relación.</p>
+<p>En específico se analizan dos conjuntos de variables sociodemográficas de las personas que viajan, las cuales corresponden a sexo y parentesco existente con el jefe del hogar; dichos conjuntos de variables son de las entidades: Ciudad de México, Hidalgo y México, que conforman la zona Metropolitana del Valle de México.</p>
+<p>Cargamos las librerías utilizadas:</p>
+<p><br></p>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="co">#librerías utilizadas:</span></span>
+<span id="cb117-2"><a href="#cb117-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb117-3"><a href="#cb117-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb117-4"><a href="#cb117-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(devtools)</span>
+<span id="cb117-5"><a href="#cb117-5" aria-hidden="true" tabindex="-1"></a><span class="co">#install_github(&quot;ggobi/ggally&quot;)</span></span>
+<span id="cb117-6"><a href="#cb117-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
+<span id="cb117-7"><a href="#cb117-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fields)</span>
+<span id="cb117-8"><a href="#cb117-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb117-9"><a href="#cb117-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(CCA)</span>
+<span id="cb117-10"><a href="#cb117-10" aria-hidden="true" tabindex="-1"></a><span class="co">#update.packages(checkBuilt = TRUE, ask = FALSE)</span></span>
+<span id="cb117-11"><a href="#cb117-11" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages(&quot;vegan&quot;,dependence=TRUE)</span></span>
+<span id="cb117-12"><a href="#cb117-12" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages(&quot;ade4&quot;,dependence=TRUE)</span></span>
+<span id="cb117-13"><a href="#cb117-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vegan)</span>
+<span id="cb117-14"><a href="#cb117-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(permute)</span>
+<span id="cb117-15"><a href="#cb117-15" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages(&quot;devtools&quot;)</span></span>
+<span id="cb117-16"><a href="#cb117-16" aria-hidden="true" tabindex="-1"></a><span class="co">#devtools::install_github(&quot;calligross/ggthemeassist&quot;)</span></span></code></pre></div>
+<p><br></p>
+<p>Se leen y preparan los datos:</p>
+<p><br></p>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Se leen los datos:</span></span>
+<span id="cb118-2"><a href="#cb118-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb118-3"><a href="#cb118-3" aria-hidden="true" tabindex="-1"></a>datosCCP<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;bd/Tablas.xlsx&quot;</span>,<span class="at">sheet=</span><span class="st">&quot;parentesco&quot;</span>)</span>
+<span id="cb118-4"><a href="#cb118-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb118-5"><a href="#cb118-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb118-6"><a href="#cb118-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Se establece el grupo de datos de parentesco:</span></span>
+<span id="cb118-7"><a href="#cb118-7" aria-hidden="true" tabindex="-1"></a>Dparentesco<span class="ot">&lt;-</span>datosCCP</span>
+<span id="cb118-8"><a href="#cb118-8" aria-hidden="true" tabindex="-1"></a>Dparentesco<span class="ot">&lt;-</span><span class="fu">as.data.frame</span>(datosCCP)</span>
+<span id="cb118-9"><a href="#cb118-9" aria-hidden="true" tabindex="-1"></a>Dparentesco</span></code></pre></div>
+<pre><code>##            Entidad Esposo_companiero  Hijo  Jefe Nieto Otro_parentesco Sin_parentesco
+## 1 Ciudad de Mexico             14586 29807 24895  5823            7231            830
+## 2          Hidalgo               202   449   283    52              52              3
+## 3           Mexico             21857 46102 31507  7598            8349            491</code></pre>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Se establece el grupo de datos de sexo:</span></span>
+<span id="cb120-2"><a href="#cb120-2" aria-hidden="true" tabindex="-1"></a>datosCCS<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;bd/Tablas.xlsx&quot;</span>,<span class="at">sheet=</span><span class="st">&quot;sexo&quot;</span>)</span>
+<span id="cb120-3"><a href="#cb120-3" aria-hidden="true" tabindex="-1"></a>Dsexo<span class="ot">&lt;-</span>datosCCS</span>
+<span id="cb120-4"><a href="#cb120-4" aria-hidden="true" tabindex="-1"></a>Dsexo<span class="ot">&lt;-</span><span class="fu">as.data.frame</span>(datosCCS)</span>
+<span id="cb120-5"><a href="#cb120-5" aria-hidden="true" tabindex="-1"></a>Dsexo</span></code></pre></div>
+<pre><code>##            Entidad Hombre Mujer
+## 1 Ciudad de Mexico  39769 43403
+## 2          Hidalgo    492   549
+## 3           Mexico  56560 59344</code></pre>
+<p><br></p>
+</div>
+<div id="resultados" class="section level3">
+<h3>Resultados</h3>
+<p><br></p>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Se grafican los grupos de variables:</span></span>
+<span id="cb122-2"><a href="#cb122-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpairs</span>(Dsexo, <span class="at">title =</span> <span class="st">&quot;Sexo de la persona que viaja&quot;</span>)</span></code></pre></div>
+<p><img src="cap1_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpairs</span>(Dparentesco, <span class="at">title =</span> <span class="st">&quot;Parentesco con respecto al jefe del hogar&quot;</span>)</span></code></pre></div>
+<p><img src="cap1_files/figure-html/unnamed-chunk-45-2.png" width="672" /></p>
+<p><br></p>
+<p>Como se puede observar se grafican en forma de matriz cada conjunto de datos con sus variables, este resultado es una correlación de las variables elegidas. Este tipo de gráfica nos provee de dos comparaciones diferentes por cada par de columnas que han sido seleccionadas.</p>
+<p><br></p>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Se unifican ambos conjuntos en uno solo para graficar:</span></span>
+<span id="cb124-2"><a href="#cb124-2" aria-hidden="true" tabindex="-1"></a>sitios <span class="ot">&lt;-</span><span class="fu">cbind</span>(Dparentesco,Dsexo[,<span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>])</span>
+<span id="cb124-3"><a href="#cb124-3" aria-hidden="true" tabindex="-1"></a>sitios</span></code></pre></div>
+<pre><code>##            Entidad Esposo_companiero  Hijo  Jefe Nieto Otro_parentesco Sin_parentesco Hombre Mujer
+## 1 Ciudad de Mexico             14586 29807 24895  5823            7231            830  39769 43403
+## 2          Hidalgo               202   449   283    52              52              3    492   549
+## 3           Mexico             21857 46102 31507  7598            8349            491  56560 59344</code></pre>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="#cb126-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggduo</span>(sitios,<span class="at">columnsX =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>,<span class="at">columnsY =</span> <span class="dv">8</span><span class="sc">:</span><span class="dv">9</span>,</span>
+<span id="cb126-2"><a href="#cb126-2" aria-hidden="true" tabindex="-1"></a>      <span class="at">types =</span> <span class="fu">list</span>(<span class="at">continuous =</span> <span class="st">&quot;smooth_lm&quot;</span>),</span>
+<span id="cb126-3"><a href="#cb126-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> <span class="st">&quot;Correlaci?n entre variables de sexo y parentesco&quot;</span>,</span>
+<span id="cb126-4"><a href="#cb126-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">xlab =</span> <span class="st">&quot;Parentesco&quot;</span>,</span>
+<span id="cb126-5"><a href="#cb126-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylab =</span> <span class="st">&quot;Sexo&quot;</span></span>
+<span id="cb126-6"><a href="#cb126-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p><img src="cap1_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
+<p><br></p>
+<p>La gráfica permite obtener y visualizar la correlación entre los dos conjuntos de variables referentes a sexo y parentesco.</p>
+<p>Se generan las matrices para los cálculos posteriores:</p>
+<p><br></p>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="#cb127-1" aria-hidden="true" tabindex="-1"></a>Y<span class="ot">&lt;-</span><span class="fu">as.matrix</span>(Dsexo[,<span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>],<span class="at">dimnames =</span> <span class="cn">NULL</span>)</span>
+<span id="cb127-2"><a href="#cb127-2" aria-hidden="true" tabindex="-1"></a>Y</span></code></pre></div>
+<pre><code>##      Hombre Mujer
+## [1,]  39769 43403
+## [2,]    492   549
+## [3,]  56560 59344</code></pre>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="#cb129-1" aria-hidden="true" tabindex="-1"></a>X<span class="ot">&lt;-</span><span class="fu">as.matrix</span>(Dparentesco[,<span class="dv">2</span><span class="sc">:</span><span class="dv">7</span>],<span class="at">dimnames =</span> <span class="cn">NULL</span>)</span>
+<span id="cb129-2"><a href="#cb129-2" aria-hidden="true" tabindex="-1"></a>X</span></code></pre></div>
+<pre><code>##      Esposo_companiero  Hijo  Jefe Nieto Otro_parentesco Sin_parentesco
+## [1,]             14586 29807 24895  5823            7231            830
+## [2,]               202   449   283    52              52              3
+## [3,]             21857 46102 31507  7598            8349            491</code></pre>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="#cb131-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Se procede a calcular las matrices de correlación dentro </span></span>
+<span id="cb131-2"><a href="#cb131-2" aria-hidden="true" tabindex="-1"></a><span class="co"># y entre los dos conjuntos de datos.</span></span>
+<span id="cb131-3"><a href="#cb131-3" aria-hidden="true" tabindex="-1"></a>mat_CC  <span class="ot">&lt;-</span><span class="fu">matcor</span>(X,Y)</span>
+<span id="cb131-4"><a href="#cb131-4" aria-hidden="true" tabindex="-1"></a>mat_CC</span></code></pre></div>
+<pre><code>## $Xcor
+##                   Esposo_companiero      Hijo      Jefe     Nieto Otro_parentesco Sin_parentesco
+## Esposo_companiero         1.0000000 0.9997193 0.9910512 0.9940332       0.9776741      0.7274944
+## Hijo                      0.9997193 1.0000000 0.9876106 0.9911699       0.9724215      0.7110351
+## Jefe                      0.9910512 0.9876106 1.0000000 0.9996978       0.9969733      0.8125682
+## Nieto                     0.9940332 0.9911699 0.9996978 1.0000000       0.9947608      0.7979936
+## Otro_parentesco           0.9776741 0.9724215 0.9969733 0.9947608       1.0000000      0.8554233
+## Sin_parentesco            0.7274944 0.7110351 0.8125682 0.7979936       0.8554233      1.0000000
+## 
+## $Ycor
+##           Hombre     Mujer
+## Hombre 1.0000000 0.9995246
+## Mujer  0.9995246 1.0000000
+## 
+## $XYcor
+##                   Esposo_companiero      Hijo      Jefe     Nieto Otro_parentesco Sin_parentesco
+## Esposo_companiero         1.0000000 0.9997193 0.9910512 0.9940332       0.9776741      0.7274944
+## Hijo                      0.9997193 1.0000000 0.9876106 0.9911699       0.9724215      0.7110351
+## Jefe                      0.9910512 0.9876106 1.0000000 0.9996978       0.9969733      0.8125682
+## Nieto                     0.9940332 0.9911699 0.9996978 1.0000000       0.9947608      0.7979936
+## Otro_parentesco           0.9776741 0.9724215 0.9969733 0.9947608       1.0000000      0.8554233
+## Sin_parentesco            0.7274944 0.7110351 0.8125682 0.7979936       0.8554233      1.0000000
+## Hombre                    0.9991953 0.9979646 0.9956075 0.9976083       0.9853154      0.7544283
+## Mujer                     0.9974838 0.9955242 0.9980207 0.9992651       0.9901111      0.7743061
+##                      Hombre     Mujer
+## Esposo_companiero 0.9991953 0.9974838
+## Hijo              0.9979646 0.9955242
+## Jefe              0.9956075 0.9980207
+## Nieto             0.9976083 0.9992651
+## Otro_parentesco   0.9853154 0.9901111
+## Sin_parentesco    0.7544283 0.7743061
+## Hombre            1.0000000 0.9995246
+## Mujer             0.9995246 1.0000000</code></pre>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="#cb133-1" aria-hidden="true" tabindex="-1"></a>Datoscca<span class="ot">&lt;-</span> <span class="fu">cca</span>(X,Y)</span>
+<span id="cb133-2"><a href="#cb133-2" aria-hidden="true" tabindex="-1"></a>Datoscca</span></code></pre></div>
+<pre><code>## Call: cca(X = X, Y = Y)
+## 
+##                Inertia Proportion Rank
+## Total         0.003953   1.000000     
+## Constrained   0.003953   1.000000    2
+## Unconstrained 0.000000   0.000000    0
+## Inertia is scaled Chi-square 
+## 
+## Eigenvalues for constrained axes:
+##     CCA1     CCA2 
+## 0.003919 0.000033</code></pre>
+<p><br></p>
+<p>Podemos observar que “Total Inertia” o varianza total en las distribuciones de los grupos de datos es relativamente pequeña así como los resultados de los eigenvalores que representan la cantidad de varianza explicada por cada eje CCA o restringida y la suma de ambos eigenvalores es el valor de “Constrained Inertia”.</p>
+<p><br></p>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="#cb135-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Datoscca,<span class="at">ylim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>,<span class="dv">2</span>))</span></code></pre></div>
+<p><img src="cap1_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
+<p><br></p>
+<p>En el gráfico se observa como en el eje existe una elevación creciente tanto para la variable mujer como para hombre.</p>
 </div>
 </div>
 

@@ -1009,3 +1009,156 @@ En el estrato medio alto hay una correspondecia cercana al metro, taxi de sitio 
 
 
 
+
+
+<br>
+<br>
+<br>
+
+## **5. Análisis de Correlación Canónica de variables Sexo y Parentesco.**
+
+<br>
+
+
+
+### Metodología. 
+
+<br>
+
+El análisis de correlación canónica es utilizado cuando un conjunto de variables se puede dividir en dos grupos homogéneos en función de algún criterio ya sea económico, demográfico, social, etc., y se desea estudiar la relación entre ambos conjuntos de variables, 
+así como cuantificar el número de dimensiones independientes existentes en esta relación.
+
+En específico se analizan dos conjuntos de variables sociodemográficas de las personas que viajan, las cuales corresponden a sexo y parentesco existente con el jefe del hogar; dichos conjuntos de variables son de las entidades: Ciudad de México, Hidalgo y México, que  conforman la zona Metropolitana del Valle de México.
+
+Cargamos las librerías utilizadas:
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+#librerías utilizadas:
+library(readxl)
+library(dplyr)
+library(devtools)
+#install_github("ggobi/ggally")
+library(GGally)
+library(fields)
+library(ggplot2)
+library(CCA)
+#update.packages(checkBuilt = TRUE, ask = FALSE)
+#install.packages("vegan",dependence=TRUE)
+#install.packages("ade4",dependence=TRUE)
+library(vegan)
+library(permute)
+#install.packages("devtools")
+#devtools::install_github("calligross/ggthemeassist")
+
+```
+
+<br>
+
+Se leen y preparan los datos:
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+# Se leen los datos:
+
+datosCCP<-read_excel("bd/Tablas.xlsx",sheet="parentesco")
+
+
+# Se establece el grupo de datos de parentesco:
+Dparentesco<-datosCCP
+Dparentesco<-as.data.frame(datosCCP)
+Dparentesco
+
+# Se establece el grupo de datos de sexo:
+datosCCS<-read_excel("bd/Tablas.xlsx",sheet="sexo")
+Dsexo<-datosCCS
+Dsexo<-as.data.frame(datosCCS)
+Dsexo
+
+```
+
+<br>
+
+### Resultados
+
+<br>
+
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+# Se grafican los grupos de variables:
+ggpairs(Dsexo, title = "Sexo de la persona que viaja")
+ggpairs(Dparentesco, title = "Parentesco con respecto al jefe del hogar")
+
+```
+
+<br>
+
+Como se puede observar se grafican en forma de matriz cada conjunto de datos con sus variables, este resultado es una correlación de las variables elegidas. Este tipo de gráfica nos provee de dos comparaciones diferentes por cada par de columnas que han sido seleccionadas.
+
+<br>
+
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+#Se unifican ambos conjuntos en uno solo para graficar:
+sitios <-cbind(Dparentesco,Dsexo[,2:3])
+sitios
+
+ggduo(sitios,columnsX = 1:7,columnsY = 8:9,
+      types = list(continuous = "smooth_lm"),
+      title = "Correlación entre variables de sexo y parentesco",
+      xlab = "Parentesco",
+      ylab = "Sexo"
+)
+
+```
+
+<br>
+
+
+La gráfica permite obtener y visualizar la correlación entre los dos conjuntos de variables referentes a sexo y parentesco.
+
+Se generan las matrices para los cálculos posteriores:
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+Y<-as.matrix(Dsexo[,2:3],dimnames = NULL)
+Y
+X<-as.matrix(Dparentesco[,2:7],dimnames = NULL)
+X
+
+# Se procede a calcular las matrices de correlación dentro 
+# y entre los dos conjuntos de datos.
+mat_CC  <-matcor(X,Y)
+mat_CC
+
+
+Datoscca<- cca(X,Y)
+Datoscca
+
+```
+
+<br>
+
+Podemos observar que "Total Inertia" o varianza total en las distribuciones de los grupos de datos es relativamente pequeña así como los resultados de los eigenvalores que representan la cantidad de varianza explicada por cada eje CCA o restringida y la suma de ambos eigenvalores es el valor de "Constrained Inertia".
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+plot(Datoscca,ylim=c(-2,2))
+
+``` 
+
+<br>
+
+En el gráfico se observa como en el eje existe una elevación creciente tanto para la variable mujer como para hombre.
+
+
