@@ -393,244 +393,9 @@ Debemos tener presente, no obstante, que todas estas interpretaciones representa
 <br>
 <br>
 
-## **3. Análisis de Factores de variables seleccionadas de la encuesta.**
 
-<br>
 
-### Metodología. 
-
-<br>
-
-Realización de análisis factorial para detectar variables latentes que resumen la variabilidad entre el conjunto de variables involucradas en la encuesta origen-destino de la zona metropolitana del valle de México
-
-El conjunto de variables en este análisis es:
-  - SEXO. Sexo de la persona
-  - EDAD. Edad de la persona
-  - ESTRATO_SOCIO. Estrato sociodemográfico de la persona
-  - OCUPACION. Ocupación de la persona
-  - ESTUDIOS. Grado de estudios de la persona
-  - NUM_VIAJES. Cantidad de viajes realizados entre semana
-  - MEDIO_TRANSPORTE. Medio de transporte que utilizó
-  - TIEMPO_MINUTOS. Tiempo en minutos del viaje realizado (tiempo de espera y trasbordo)
-  
-<br>
-
-Librerías, lectura y acondicionamiento de datos.
-
-<br>
-
-``` {r echo = T, eval= T, message = F, warning = F}
-
-#Librerías
-library(ggplot2)
-library(ggcorrplot)
-library(psych)
-library(MASS) # Prueba estadística
-library(stats) # Análisis de factores
-library(psych)
-library(GPArotation)
-
-base<-read.csv(file="bd/DatosAF.csv")
-base<-base[,1:8]
-head(base) # Primeras filas de los datos
-colnames(base)<-c("SEXO","EDAD","ESTRATO_SOCIO","OCUPACION","ESTUDIOS","NUM_VIAJES","MEDIO_TRANSPORTE","TIEMPO_MINUTOS")
-head(base) # Primeras filas de los datos con las columnas renombradas
-
-# Se categorizan los 99's en NA
-base[base==99]<-NA
-summary(base)
-baseLW<-na.omit(base) # Se omiten los NA's
-head(baseLW)
-
-mat_base<-as.matrix(baseLW) 
-
-idx<-complete.cases(baseLW) # Se obtiene el vector lógico de casos completos
-#idx
-datos_compl<-mat_base[idx,] # Datos completos
-
-```
-
-<br>
-
-Se obtiene la matriz de correlaciones:
-
-<br>
-
-``` {r echo = T, eval= T, message = F, warning = F}
-
-n=dim(datos_compl)[1]
-p=dim(datos_compl)[2]
-dim(datos_compl)
-mat_cor <- round(cor(datos_compl),3) # Se obtiene la matriz de correlación
-mat_cor
-
-# Se grafica la matriz de correlación
-
-ggcorrplot(mat_cor,type="lower",lab = TRUE, tl.cex = 10,
-           ggtheme = ggplot2::theme_gray,
-           colors = c("blue", "white", "deeppink"))
-
-# Se calcula el determinante:
-det(mat_cor)
-
-```
-
-<br>
-
-
-COMENTARIOS: Los resultados obtenidos tanto de la matriz de correlación como del determinante,
-indican que existe bajo nivel de colinealidad.
-
-Se aplica la prueba de Bartlett que se utiliza para probar la hipótesis nula 
-que afirma que las variables no están correlacionadas en la población o el supuesto de 
-homogeneidad de varianzas:
-
-<br>
-
-``` {r echo = T, eval= T, message = F, warning = F}
-
-p_fac<-cortest.bartlett(mat_cor,n=nrow(baseLW))
-p_fac
-p_fac$p
-
-```
-
-<br>
-
-De acuerdo a los resultados obtenidos se podría interpretar la presencia de
-multicolinealidad en el conjunto de variables, ya que el p-valor es menor a 0.05.
-
-Se aplica otra prueba de Kaiser-Meyer-Olkin en donde los resultados son valorados como:
-
-  - 0.00 a 0.49 inaceptable.  
-  - 0.50 a 0.59 escasamente regular.  
-  - 0,60 a 0,69 regular.  
-  - 0.70 a 0.79 medio.  
-  - 0,80 a 0,89 meritorio.  
-  - 0.90 a 1.00 maravilloso.  
-
-``` {r echo = T, eval= T, message = F, warning = F}
-
-KMO(mat_cor)
-
-```
-
-<br>
-
-De acuerdo a los resultados de la prueba KMO, se observa que existe un bajo nivel de multicolinealidad entre las variables.
-
-<br>
-
-
-### Resultados. 
-
-<br>
-
-Se aplica el análisis de factores.
-
-<br>
-
-``` {r echo = T, eval= T, message = F, warning = F}
-
-# minres --> modelo mínimo residuo
-# Se determina el número de factores
-
-scree(mat_cor)
-fa.parallel(mat_cor,n.obs=nrow(datos_compl),fa="fa",fm="minres")
-
-```
-
-<br>
-
-
-COMENTARIOS: De acuerdo a los resultados gráficos se observa que a partir de 2 factores
-se pueden utilizar, sin embargo con 4 factores se podría considerar para un patrón ideal.
-
-De acuerdo a estos resultados se considerarán 4 factores.
-
-<br>
-
-``` {r echo = T, eval= T, message = F, warning = F}
-
-#Se ejecutan las Rotaciones
-datos.fa.none <- factanal(datos_compl, factors = 4, rotation = "none")
-datos.fa.varimax <- factanal(datos_compl, factors = 4, rotation = "varimax")
-datos.fa.promax <- factanal(datos_compl, factors = 4, rotation = "promax")
-
-par(mfrow = c(1,3))
-plot(datos.fa.none$loadings,pch=21,            
-     bg="orange",
-     ylim = c(-1,1),
-     xlim = c(-1,1),
-     main = "No rotación")
-abline(h = 0, v = 0)
-
-plot(datos.fa.varimax$loadings,pch=21,            
-     bg="magenta",
-     ylim = c(-1,1),
-     xlim = c(-1,1),
-     main = "Rotación Varimax")
-
-text(datos.fa.varimax$loadings-0.08,
-     colnames(baseLW),
-     col="blue")
-abline(h = 0, v = 0)
-
-plot(datos.fa.promax$loadings,pch=21,            
-     bg="cyan", 
-     ylim = c(-1,1),
-     xlim = c(-1,1),
-     main = "Rotación Promax")
-abline(h = 0, v = 0)
-
-par(mfrow = c(1,1))
-modeloAF<-fa(datos_compl,rotate = "varimax",nfactors = 4,fm="minres")
-plot(modeloAF)
-fa.diagram(modeloAF)
-modeloAF$uniquenesses
-modeloAF$communalities
-
-#####
-modeloAF_re<-factanal(datos_compl,factors=4,rotation = "varimax",scores="regression")
-modeloAF_re
-
-```
-
-<br>
-
-COMENTARIOS: Derivado de estos resultados, se observa que el factor 1 explica el 15% de la varianza, el factor 2 explica el 13%, el factor 3 explica el 7% y  el factor 4 explica el 3%.
-
-<br>
-
-``` {r echo = T, eval= T, message = F, warning = F}
-
-diagram(modeloAF_re)
-
-#Se obtienen los scores
-scoresAF<-modeloAF_re$scores
-summary(scoresAF)
-
-#Se obtienen los loadings
-loadingsAF<-modeloAF$loadings
-summary(loadingsAF)
-plot(loadingsAF,pch=21,            
-     bg="purple",         
-     cex=1,) # Dibujar el área de visualización
-text(loadingsAF,labels=names(baseLW),cex=.7) # Añadir las variables
-abline(h = 0, v = 0,col = "cornflowerblue",lwd = 2)
-
-```
-
-
-
-
-
-
-<br>
-<br>
-<br>
-
-## **4. Análisis de Correspondencias entre las variables: Estrato sociodemográfico vs Tipo de Transporte (P5_14).**
+## **3. Análisis de Correspondencias entre las variables: Estrato sociodemográfico vs Tipo de Transporte (P5_14).**
 
 <br>
 
@@ -1015,7 +780,7 @@ En el estrato medio alto hay una correspondecia cercana al metro, taxi de sitio 
 <br>
 <br>
 
-## **5. Análisis de Correlación Canónica de variables Sexo y Parentesco.**
+## **4. Análisis de Correlación Canónica de variables Sexo y Parentesco.**
 
 <br>
 
@@ -1147,13 +912,15 @@ Datoscca
 
 <br>
 
-Podemos observar que "Total Inertia" o varianza total en las distribuciones de los grupos de datos es relativamente pequeña así como los resultados de los eigenvalores que representan la cantidad de varianza explicada por cada eje CCA o restringida y la suma de ambos eigenvalores es el valor de "Constrained Inertia".
+Podemos observar que la "Total Inertia" o varianza total en las distribuciones de los grupos de datos es media, así como los resultados de los eigenvalores que representan la cantidad de varianza explicada por cada eje CCA o restringida, y la suma de ambos eigenvalores es el valor de "Constrained Inertia".
+
+
 
 <br>
 
 ``` {r echo = T, eval= T, message = F, warning = F}
 
-plot(Datoscca,ylim=c(-2,2))
+plot(Datoscca,ylim=c(-1,1))
 
 ``` 
 
@@ -1161,4 +928,426 @@ plot(Datoscca,ylim=c(-2,2))
 
 En el gráfico se observa como en el eje existe una elevación creciente tanto para la variable mujer como para hombre.
 
+**Comentarios finales de la técnica:** De acuerdo a los resultados obtenidos, podemos observar que la correlación con parentesco es media, y referente al sexo, podemos decir que no es un determinante en los viajes realizados, es decir que es indiferenciado el género; en relación al parentesco se observa que influye medianamente en la movilidad de la Zona Metropolitana del Valle de México.
 
+
+
+
+
+
+
+
+<br>
+<br>
+<br>
+
+## **5. Análisis de Factores de los tipos de destino de los viajes.**
+
+<br>
+
+
+
+### Metodología. 
+
+<br>
+
+El análisis siguiente se centró en los tipos de destino de los viajes, los cuales se describieron en el apartado 1 de este análisis.
+
+Procedemos a la lectura y acondicionamiento de datos, creamos variables indicadoras para cada tipo de viaje, a efecto de poder analizarlas en su conjunto.
+
+Agrupamos luego las frecuencias de cada tipo de destino, sumando el total de viajes por destino para cada distrito de origen de los viajes. 
+
+Los distritos son agrupaciones de manzanas de la ZMVM que representan regiones más o menos homogéneas respecto a su ubicación geográfica. Son 194 para la zona de estudio y para su conformación se consideraron variables como acceso común a avenidas, demarcación territorial de acuerdo con colonias y fraccionamientos, entre otras, para facilitar la organización y explotación de la información sobre los viajes que se realizan entre las distintas áreas geográficas que conforman la ZMVM.
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+viaj <- read.csv("bd/tviaje5.csv")
+
+viaj$d1 <- ifelse(viaj$p5_11a == 1, 1, 0)
+viaj$d2 <- ifelse(viaj$p5_11a == 2, 1, 0)
+viaj$d3 <- ifelse(viaj$p5_11a == 3, 1, 0)
+viaj$d4 <- ifelse(viaj$p5_11a == 4, 1, 0)
+viaj$d5 <- ifelse(viaj$p5_11a == 5, 1, 0)
+viaj$d6 <- ifelse(viaj$p5_11a == 6, 1, 0)
+viaj$d7 <- ifelse(viaj$p5_11a == 7, 1, 0)
+viaj$d8 <- ifelse(viaj$p5_11a == 8, 1, 0)
+viaj$d9 <- ifelse(viaj$p5_11a == 9, 1, 0)
+viaj$d10 <- ifelse(viaj$p5_11a == 10, 1, 0)
+viaj$d11 <- ifelse(viaj$p5_11a == 11, 1, 0)
+viaj$d13 <- ifelse(viaj$p5_11a == 13, 1, 0)
+viaj$d14 <- ifelse(viaj$p5_11a == 14, 1, 0)
+
+viaj2 <- sqldf("select dto_origen, sum(d1) as hogar, 
+              sum(d2) as escuela,
+              sum(d3) as oficina, sum(d4) as fabrica_taller,
+              sum(d5) as centro_comercial, sum(d6) as c_cultural_recrea,
+              sum(d7) as otra_viv, sum(d8) as hosp_clinica,
+              sum(d9) as restaurante, sum(d10) as deport_gym,
+              sum(d11) as est_transp_pub,
+              sum(d13) as otros_serv, sum(d14) as rec_relig
+              FROM viaj GROUP BY dto_origen")
+
+viaj2 <- viaj2[,-1]
+
+``` 
+
+<br>
+
+Y con ello se obtiene la matriz de correlaciones:
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+mc <- cor(viaj2)
+corrplot(mc, order = "hclust",
+         tl.col='black', tl.cex=1) #Gráfico de las correlaciones
+
+```
+
+<br>
+
+Se exploran los datos, aplicando a los datos el cálculo de su determinante, así como la prueba de esfericidad de Bartlet.
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+det(mc)
+
+bartlett.test(viaj2)
+
+```
+
+<br>
+
+Un determinante bajo, es decir, cercano a 0, indica alta multicolinealidad entre las variables. De ser igual a cero (matriz no singular), esto indicaría que algunas de las variables son linealmente dependientes y no se podrían realizar ciertos cálculos necesarios para los procedimientos multivariados. En este caso observamos que es cercano a 0, lo que sugiere colinealidad en el conjunto de variables involucradas en la matriz, sin embargo, continuamos con el análisis en espera de que esta no entorpezca dicho análisis.
+
+El test de esfericidad de Bartlett pone a prueba la hipótesis nula de que las variables analizadas no están correlacionadas en la muestra o, dicho de otro modo, que la matriz de correlación es la identidad (las intercorrelaciones entre las variables son cero). En este caso, la prueba rechaza H0, lo que indica que existe el nivel de correlación suficiente para realizar el AF.
+
+Por lo tanto, procedemos a probar una estimación por componentes principales para determinar
+las cargas y el número de factores a usar:
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+det(mc)
+
+bartlett.test(viaj2)
+
+```
+
+<br>
+
+Y trazamos un screeplot para verificar el número necesario de factores:
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+fa.parallel(mc,n.obs=1000,fa="both",fm="ml")
+
+```
+
+<br>
+
+### Resultados.
+
+<br>
+
+Por lo tanto, decidimos tomar 3 factores. Aplicamos la función *factanal* para obtener el modelo de factores, primero sin rotación.
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+mod0 <- factanal(viaj2, factors = 3, rotation = "none")
+mod0
+
+```
+
+<br>
+
+Donde vemos que no hay mucha claridad en la definición de algunas variables (*oficina*, *otra vivienda*, *restaurante*, etc.). Por lo tanto, aplicamos una rotación *varimax*:
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+mod1 <- factanal(viaj2, factors = 3, rotation = "varimax")
+mod1
+
+```
+
+<br>
+
+Con lo que ya observamos una diferenciación más clara de los factores. Llama la atención el p-valor de la prueba de hipótesis de que 3 factores son suficientes, el cual cae en la zona de rechazo, lo que puede indicar que es necesario adicionar un cuarto factor.
+
+Se puede usar la librería *psych* para delinear un diagrama de árbol que permita visualizar los 3 factores más fácilmente:
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+library(psych)
+
+mod2 <- fa(mc, nfactors = 3,
+              rotate = "varimax", fa="ml")
+fa.diagram(mod2)
+
+
+```
+
+<br>
+
+Sólo por indagar el efecto, tomamos el modelo de 4 factores:
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+mod3 <- factanal(viaj2, factors = 4, rotation = "varimax")
+mod3
+
+```
+
+<br>
+
+Donde la prueba de hipótesis arroja un p-valor que cae dentro de la zona de aceptación (4 factores son suficientes).
+
+Y dibujamos su diagrama:
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+mod4 <- fa(mc, nfactors = 4,
+              rotate = "varimax", fa="ml")
+fa.diagram(mod4)
+
+```
+
+<br>
+
+### Interpretación.
+
+<br>
+
+  - Con el modelo de 3 factores, se pueden diferenciar en el primer factor los tipos de destino que podrían considerarse asociados a la población económicamente activa, es decir, el tipo de destinos que las personas ocupadas frecuentan.
+  
+  - En el factor 2 se asocian los destinos típicos de la población no activa, es decir, estudiantes, jubilados y personas dedicadas al trabajo no remunerado del hogar.
+  
+  - En el tercer factor, se aisla el tipo de destino que es el hogar, lo cual resulta lógico, toda vez que éste representa el destino último de todos los viajes del día, y no se corresponde necesariamente con algún tipo de población específica.
+  
+  - Cuando agregamos un cuarto factor, vemos que la estructura de los factores no cambia, excepto porque se separan los destinos asociados al deporte y gimnasios, y los de otros servicios, que parecen no estar asociados con alguna de las dos poblaciones anteriores, según la interpretación propuesta.
+
+
+
+
+
+
+
+
+
+<br>
+<br>
+<br>
+
+## **6. Análisis de Factores de los tipos de transporte usados en los viajes.**
+
+<br>
+
+
+### Metodología. 
+
+<br>
+
+Se realiza ahora un último análisis de factores para tratar de identificar las asociaciones que puede haber dentro de los tipos de transporte usados en los viajes. Para ello se toma el conjunto de variables P5_15_01 a P5_15_19 de la encuesta, y agrupando sus frecuencias nuevamente por distrito (el número de veces que se usaron los transportes en viajes hechos por los residentes de cada distrito).
+
+Los tipos de transporte que la encuesta captó fueron: 
+
+  - Automóvil  
+  - Colectivo/Micro  
+  - Taxi (App internet)  
+  - Taxi (sitio, calle u otro)  
+  - Metro  
+  - Autobús RTP o M1  
+  - Bicicleta   
+  - Autobús (suburbano)  
+  - Moto   
+  - Trolebús   
+  - Metrobús o Mexibús   
+  - Tren ligero   
+  - Tren suburbano   
+  - Caminar en la calle  
+  - Mexicable  
+  - Bicitaxi   
+  - Mototaxi   
+  - Transporte escolar  
+  - Transporte de personal  
+
+<br>
+
+Por lo tanto, procedemos a leer y agrupar los datos.
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+viaj3 <- read.csv("bd/tviaje6.csv")
+
+viaj4 <- sqldf("select dto_origen, sum(p5_15_01) as auto, 
+              sum(p5_15_02) as colect_micro,
+              sum(p5_15_03) as taxi_app, sum(p5_15_04) as taxi,
+              sum(p5_15_05) as metro, sum(p5_15_06) as autobus_rtp,
+              sum(p5_15_07) as bici, sum(p5_15_08) as autobus_sub,
+              sum(p5_15_09) as moto, sum(p5_15_10) as troleb,
+              sum(p5_15_11) as metrobus,
+              sum(p5_15_12) as tren_lig, sum(p5_15_13) as tren_sub,
+              sum(p5_15_14) as caminar,
+              sum(p5_15_15) as mexicable, sum(p5_15_16) as bicitaxi,
+              sum(p5_15_17) as mototaxi,
+              sum(p5_15_18) as transp_esc, sum(p5_15_19) as transp_pers
+              FROM viaj3 GROUP BY dto_origen")
+
+viaj4 <- viaj4[,-1]
+
+```
+
+<br>
+
+Obtenemos la matriz de correlaciones: 
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+mc2 <- cor(viaj4)
+corrplot(mc2, order = "hclust",
+         tl.col='black', tl.cex=1) #Gráfico de las correlaciones
+
+```
+
+<br>
+
+Probamos con el Test de Bartlett.
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+bartlett.test(viaj4)
+
+```
+
+<br>
+
+En este caso, la prueba rechaza H0, lo que indica que existe el nivel de correlación suficiente para realizar el AF.
+
+Trazamos un diagrama de codo para verificar el número de factores recomendado:
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+fa.parallel(mc2,n.obs=1000,fa="both",fm="ml")
+
+```
+
+<br>
+
+Que nos sugiere que es necesario usar 5 factores, aunque el criterio del eigenvalor = 1 indica que 4 podrían ser suficientes.
+
+Por lo tanto probaremos un análisis usando la función *factanal*, que como sabemos utiliza por defecto máxima verosimilitud, primero sin rotación:
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+mod5 <- factanal(viaj4, factors = 5, rotation = "none")
+mod5
+
+```
+
+<br>
+
+De este resultado, observamos que la varianza explicada que se acumula al agregar el quinto factor ya es muy pequeña (menos del 4%), por lo que decidimos que con 4 factores (que explican casi un  60% de la varianza) puede ser suficiente para ilustrar lo que deseamos.
+
+También vemos que algunas variables (moto, trolebús, caminar, mexicable, etc.) no se definen bien en las cargas hacia un factor específico.
+
+<br>
+
+### Resultados.
+
+<br>
+
+Por lo tanto, se decide usar solo 4 factores, aun cuando la prueba de hipótesis indiquen que no son suficientes. Usamos rotación *varimax* para definir mejor las cargas.
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+mod6 <- factanal(viaj4, factors = 4, rotation = "varimax")
+mod6
+
+```
+
+<br>
+
+Modelo en que vemos ya mejor definidos a los factores.
+
+Para finalizar, mostramos de forma esquemática los resultados del agrupamiento, en un diagrama de árbol:
+
+<br>
+
+``` {r echo = T, eval= T, message = F, warning = F}
+
+mod7 <- fa(mc2, nfactors = 4,
+              rotate = "varimax", fa="ml")
+fa.diagram(mod7)
+
+```
+
+<br>
+
+
+### Interpretación.
+
+<br>
+
+  - El primer factor se puede interpretar como la asociación de transportes que se usan para tramos cortos o que forman parte de la red de transporte público de la CDMX.
+  
+
+  - En el segundo factor define con claridad los transportes de dos o tres ruedas.
+  
+  - El tercer factor agrupa aquellos transportes que se usan en tramos mas largos o bien en la periferia de la CDMX (municipios conurbados del Edo. de México). Incluye también los transportes corporativos y escolares.
+  
+  - El último factor separa al tren ligero, el cual en cierto sentido no es como el resto de los transportes de la CDMX.
+  
+  
+<br>
+<br>
+<br>
+
+
+## **Conclusión.**
+
+Las técnicas de métodos estadísticos multivariados vistas en el curso son herramientas muy útiles para el análisis del comportamiento de grandes volúmenes de información integrados por conjuntos de variables, que funcionan, ya sea utilizando algún método descriptivo (gráfico) para analizar el comportamiento de los datos, o bien mediante la reducción de dimensionalidad o la medición de asociaciones entre grupos de variables, lo que incluso se traduce en la disminución del costo computacional del procesamiento de la información, ya que los modelos seleccionan las variables más representativas  del conjunto de datos.  
+
+Esto  se hace  necesario en el análisis de los abundantes productos de estadística básica o derivada que se genera en el INEGI, integrada por bases de datos muy grandes, como es el caso que se presentó de la Encuesta Origen-Destino de la Zona Metropolitana del Valle de México,  2017.
+
+<br>
+
+
+```{r ig, fig.align='center', echo=FALSE, out.width = "100%", cache=TRUE}
+
+knitr::include_graphics("archivos/gracias.gif")
+
+```
+
+
+
+  
