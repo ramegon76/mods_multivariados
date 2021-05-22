@@ -10,7 +10,7 @@ title: "**Presentación**"
 
 <div class=text-justify>
 
-# **Proyecto: Análisis sobre las variables asociadas a los viajes de la Encuesta origen Destino de la Zona Metropolitana del Valle de México (EOD) 2017.**
+# **Proyecto: Análisis sobre las variables asociadas a los viajes de la Encuesta Origen-Destino de la Zona Metropolitana del Valle de México (EOD) 2017.**
 
 
 <br>
